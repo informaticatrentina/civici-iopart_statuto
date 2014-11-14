@@ -531,7 +531,7 @@ body .inmovimento .modal .modal-header { background-color: rgb(226,185,14); }
 	text-indent: -5000px;
 	width: 127px;
 	height: 26px;
-	background-image: url('../images/civici.png');
+	background-image: none;
 }
 
 .psp-logo

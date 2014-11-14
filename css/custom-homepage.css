@@ -151,15 +151,15 @@ Carousel
 	float: left;
 }
 
-.civici-logo
+.partecipa-logo
 {
 	position: absolute;
 	top: 18px;
 	display: block;
 	text-indent: -5000px;
-	width: 127px;
-	height: 26px;
-	background-image: url('../images/civici.png');
+	width: 170px;
+	height: 64px;
+	background-image: none;
 }
 
 .psp-logo
