@@ -523,15 +523,15 @@ body .inmovimento .modal .modal-header { background-color: rgb(226,185,14); }
 	float: left;
 }
 
-.civici-logo
+.partecipa-logo
 {
 	position: absolute;
 	top: 18px;
 	display: block;
 	text-indent: -5000px;
-	width: 127px;
-	height: 26px;
-	background-image: none;
+	width: 165px;
+	height: 56px;
+	background-image: url('../images/logo-partecipa.jpg');
 }
 
 .psp-logo
