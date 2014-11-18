@@ -155,4 +155,51 @@ $(document).ready(function() {
       }
     }
   });
+
+  $('.highlighter').click(function(e) {
+    e.preventDefault();
+    var self = $(this);
+    highlightProposalByAjax(self);
+  });
 });
+
+
+function highlightProposalByAjax(self) {
+  var loadingHtml = $('.loading-image').html();
+  $(self).after(loadingHtml);
+  var pageUrl = $(self).attr('href');
+  var tags = $(self).attr('highlight');
+  $(self).hide();
+  $.ajax({
+    type: 'GET',
+    url: pageUrl,
+    dataType: 'json',
+    data: {
+      tag: tags
+    },
+    success: function(resp) {
+      if (resp.success) {
+        var tag = 'Highlight';
+        if (tags == 'Highlight') {
+          tag = 'UnHighlight';
+        }
+        var translatedTag = Yii.t('js', tag);
+        $(self).attr('highlight', tag);
+        $(self).text(translatedTag);
+        $(self).show();
+        $(self).siblings('img').remove();
+        $('table').trigger('update');
+      } else {
+        $(self).siblings('img').remove();
+        $(self).show();
+        alert(Yii.t('js', 'An error occurred'));
+      }
+    },
+    error: function() {
+      $(self).siblings('img').remove();
+      $(self).show();
+      alert(Yii.t('js', 'An error occurred'));
+    }
+  });
+  return false;
+}

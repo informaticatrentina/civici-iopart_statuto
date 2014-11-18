@@ -38,11 +38,17 @@
   <div class="allproposals row {{ccolor}}">
     {% set count = 0 %}
     {% for proposal in proposals.data %}
+      {% set highLightProposalBody = '' %}
+      {% set highlightedProposalHeader = '' %}
+      {% if proposal.highlighted == true %}
+        {% set highLightProposalBody = 'highlighted-body' %}
+        {% set highlightedProposalHeader = 'highlighted' %}
+      {% endif %}
       <div class="post-box col-lg-4 col-md-4 col-sm-4 col-xs-12 singleProposal">
-        <article class="proposal by-{{proposal.author.slug}} pid-{{proposal.id}}">
+        <article class="proposal {{highLightProposalBody}} by-{{proposal.author.slug}} pid-{{proposal.id}}">
           <input class="auID" value="by-{{proposal.author.slug}}" type="hidden">
           <a class="openModal">
-            <h3 class="proposalheader">{{ proposal.title }}</h3>
+            <h3 class="proposalheader {{highlightedProposalHeader}}">{{ proposal.title }}</h3>
             <div class="byline"><img src="{{constant('PROFILE_IMAGE_URL')~proposal.author.slug}}/{{constant('PROFILE_IMAGE_SIZE')}}">
               <div class="author">{{t('discussion','by')}} {{ proposal.author.name }}</div>
             </div>

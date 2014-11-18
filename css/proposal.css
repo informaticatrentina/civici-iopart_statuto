@@ -870,3 +870,12 @@ body .color-wheat .modal .modal-header { background-color: #af825d; }
 body .color-purple .modal .documents { background-color: #965a73; }
 body .color-purple .modal .modal-header { background-color: #965a73; }
 .color-purple .panelinner { border-top: 5px solid #965a73; }
+
+.highlighted-body {
+  background-color: #ecf3f5;
+}
+
+.highlighted {
+  background-color: #7dafbf;
+  color: #fff;
+}

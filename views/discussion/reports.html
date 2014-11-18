@@ -1,4 +1,6 @@
 <link href="{{constant('THEME_URL')}}css/theme.bootstrap.css" rel="stylesheet">
+{% set isHighlighter = checkPermission('can_mark_highlighted') %}
+{% set isAdmin = checkPermission('admin') %}
 <div class="title-bar">
   <div class="container">
     <div class="pull-left">
@@ -6,10 +8,13 @@
         {{discussionTitle}} 
       </h1>
     </div>
-    <div class="pull-right" style="margin-top: 10px; margin-right:20px;margin-bottom: 10px;">
-      <form method="post" action="{{constant('BASE_URL')}}admin/export/{{discussionId}}">
-        <button class=" btn-info excel" >Export To Excel</button>
-      </form>    </div>
+    {% if isAdmin == true %}
+      <div class="pull-right" style="margin-top: 10px; margin-right:20px;margin-bottom: 10px;">
+        <form method="post" action="{{constant('BASE_URL')}}admin/export/{{discussionId}}">
+          <button class=" btn-info excel" >Export To Excel</button>
+        </form>
+      </div>
+    {% endif %}
   </div>
 </div>
 <div class="container">
@@ -23,10 +28,15 @@
         <th>{{ t('discussion','Number of Opinions') }}</th>
         <th>{{ t('discussion','Number of Links') }}</th>
         <th class="sorter-false">{{ t('discussion','Triangle count') }}</th>
-        <th class="sorter-false">{{ t('discussion','Edit') }}</th>
-        <th class="sorter-false">{{ t('discussion','View opinions') }}</th>      
-        <th class="sorter-false">{{ t('discussion','View links') }}</th>
-        <th class="sorter-false">{{ t('discussion','Status') }}</th>
+        {% if isAdmin == true %}
+          <th class="sorter-false">{{ t('discussion','Edit') }}</th>
+          <th class="sorter-false">{{ t('discussion','View opinions') }}</th>
+          <th class="sorter-false">{{ t('discussion','View links') }}</th>
+          <th class="sorter-false">{{ t('discussion','Status') }}</th>
+        {% endif %}
+        {% if isHighlighter == true %}
+          <th>{{ t('discussion','Highlight Proposal') }}</th>
+        {% endif %}
       </tr>
     </thead>
     {% for proposal in allProposals %}
@@ -59,20 +69,36 @@
         {{proposal.weightmap}}
         {%endif%}
       </td>
-      <td class="edit-proposal" proposal-id="{{proposal.id}}" proposal-summary="{{proposal.content.summary}}">
-        <a a href="#formModal" data-toggle="modal">{{t('discussion','Edit')}}</a>
-      </td>
-      <td><a class="proposalLinks" href="{{constant('BASE_URL')}}discussion/proposals/{{slug}}/opinion?id={{proposal.id}}">{{ t('discussion','View opinions')}}</a></td>
-      <td><a class="proposalLinks" href="{{constant('BASE_URL')}}discussion/proposals/{{slug}}/links?id={{proposal.id}}">{{ t('discussion','View links')}}</a></td>
-      {% if proposal.status == 'active' %}
-        <td>
-          <span proposal-id='{{proposal.id}}' class="proposalStatus">{{t('discussion', 'Hide')}} </span>
-          <span style="display:none;" class="loading-image"><img src="{{constant('THEME_URL')}}images/loader.gif" alt="loading..." /></span> 
+      {% if isAdmin == true %}
+        <td class="edit-proposal" proposal-id="{{proposal.id}}" proposal-summary="{{proposal.content.summary}}">
+          <a a href="#formModal" data-toggle="modal">{{t('discussion','Edit')}}</a>
         </td>
-        {% else %}
+        <td><a class="proposalLinks" href="{{constant('BASE_URL')}}discussion/proposals/{{slug}}/opinion?id={{proposal.id}}">{{ t('discussion','View opinions')}}</a></td>
+        <td><a class="proposalLinks" href="{{constant('BASE_URL')}}discussion/proposals/{{slug}}/links?id={{proposal.id}}">{{ t('discussion','View links')}}</a></td>
+        {% if proposal.status == 'active' %}
+          <td>
+            <span proposal-id='{{proposal.id}}' class="proposalStatus">{{t('discussion', 'Hide')}} </span>
+            <span style="display:none;" class="loading-image"><img src="{{constant('THEME_URL')}}images/loader.gif" alt="loading..." /></span> 
+          </td>
+          {% else %}
+          <td>
+            <span proposal-id='{{proposal.id}}'  class="proposalStatus">{{t('discussion', 'Show')}}</span>
+            <span style="display:none;" class="loading-image"><img src="{{constant('THEME_URL')}}images/loader.gif" alt="loading..." /></span> 
+          </td>
+        {% endif %}
+      {% endif %}
+      {% if isHighlighter == true %}
         <td>
-          <span proposal-id='{{proposal.id}}'  class="proposalStatus">{{t('discussion', 'Show')}}</span>
-          <span style="display:none;" class="loading-image"><img src="{{constant('THEME_URL')}}images/loader.gif" alt="loading..." /></span> 
+          {% set highlighterText = t('discussion','Highlight') %}
+          {% set highlighterAttribute = 'Highlight' %}
+          {% if proposal.highlight is defined%}
+            {% set highlighterText = t('discussion','UnHighlight') %}
+            {% set highlighterAttribute = 'UnHighlight' %}
+          {% endif %}
+          <a class="proposalLinks highlighter"
+             href="{{constant('BASE_URL')}}discussion/proposal/highlight/{{slug}}?id={{proposal.id}}" highlight = "{{highlighterAttribute}}">
+            {{ highlighterText }}
+          </a>
         </td>
       {% endif %}
     </tr>
