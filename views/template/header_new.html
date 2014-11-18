@@ -32,9 +32,9 @@
     </div>
   </div>
 </div>
-{% set adminUser = false %}
-{% set adminUser = isAdminUser() %}
-{% if adminUser == true %}      
+{% set isAdminVisible = adminMenuVisible() %}
+{% set isAdmin = checkPermission('admin') %}
+{% if isAdminVisible == true %}
   <ul class="nav nav-tabs">
     <li><a href="{{constant('BASE_URL')}}">Home</a></li>
     <li class="dropdown">
@@ -42,8 +42,11 @@
         Admin <span class="caret"></span>
       </a>
       <ul class="dropdown-menu">
-        <li><a href="{{constant('BASE_URL')}}admin/discussion/list">Discussion List</a></li>
-        <li><a href="{{constant('BASE_URL')}}admin/configuration">Configuration Panel</a></li>
+        <li><a href="{{constant('BASE_URL')}}admin/discussion/list">{{ t('discussion', 'Discussion List') }}</a></li>
+        {% if isAdmin == true and App.session is not empty %}
+          <li><a href='{{constant("BASE_URL")}}admin/configuration'>{{ t('discussion', 'Configuration Panel') }}</a></li>
+          <li><a href='{{constant("BASE_URL")}}rbacconnector/user/index'>{{ t('discussion', 'Rbac') }}</a></li>
+        {% endif %}
       </ul>
     </li>
   </ul>
