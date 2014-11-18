@@ -173,7 +173,6 @@ $(document).ready(function() {
     $('#formModal').modal('hide');
   });
   var $container = $('.allproposals');
-  $('body').css('padding-top', '60px');
   $container.imagesLoaded(function() {    
     $container.masonry({
       itemSelector: '.post-box',
