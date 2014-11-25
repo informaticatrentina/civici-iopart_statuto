@@ -35,6 +35,12 @@
     {% endif %}
     <input type="password" class="input-block-level" name ="password" value="{{password}}" id="password" placeholder="{{t('discussion', 'Password')}}">
     
+    {% set confirmPassword = '' %}
+    {% if user.confirm_password is not empty %}
+      {% set confirmPassword = user.confirm_password %}
+    {% endif %}
+    <input type="password" class="input-block-level" name ="confirm_password" value="{{confirmPassword}}" id="confirm-password" placeholder="{{t('discussion', 'Confirm Password')}}">
+
     {% set checked = '' %}
     {% if user.terms is not empty %}
       {% set checked = 'checked' %}
