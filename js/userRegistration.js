@@ -30,12 +30,16 @@ $(document).ready(function() {
     } else if (!emailRegExp.test(email)) {
       $('#error').html(Yii.t('js', 'Please enter valid email id')).css('color','red');
       return false;
-    } else if ($('#register-terms').is(':checked') == false) {
+    }
+    if ($('#register-terms').is(':checked') == false) {
       $('#error').html(Yii.t('js', 'Please accept terms and condition')).css('color','red');
       return false;
-    } else {
-      $('#error').html();
     }
+    if ($('#register-privacy').is(':checked') == false) {
+      $('#error').html(Yii.t('js', 'Please check privacy checkbox')).css('color','red');
+      return false;
+    }
+    $('#error').html();
   }); 
 });
 
