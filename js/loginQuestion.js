@@ -34,7 +34,7 @@ $(document).ready(function() {
     if ($('#authority-description').val() == '') {
       $('#error-msg').html(Yii.t('js', 'Please add authority description'));
       return false;
-    }alert('hiii');
+    }
     $('#additional-info-form').submit();
   });
   
