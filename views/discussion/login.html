@@ -18,8 +18,12 @@
       <input type="checkbox" value="remember-me"> {{ t('discussion', 'Remember me') }}
     </label>
     <button class="btn btn-primary" type="submit" id="submit">{{ t('discussion', 'Sign in') }}</button>
+    <button class="btn btn-primary" type="btn" id="forgot-password" style='margin-top: 15px;'>{{ t('discussion', 'Forgot password') }}</button>
   </form>
 </div>
+<script type="text/javascript">
+   var forgotPasswordPageUrl = "{{constant('BASE_URL')}}" + 'user/forgot-password';
+ </script>
 {% if additional_info_url is not empty %}
   <script type="text/javascript">
    var additionalInfoPageUrl = "{{additional_info_url}}";
