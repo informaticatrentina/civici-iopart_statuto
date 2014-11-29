@@ -90,9 +90,9 @@
         <label for="public_authority"> {{additional_info.public_authority.text}} </label>
         <select name="public_authority" id="public-authority">
           <option value="">{{t('discussion','select authority')}}</option>
+          {% set style = 'style="display:none;"' %}
           {% for key,value in additional_info.public_authority.value %}
             {% set selected = '' %}
-            {% set style = 'style="display:none;"' %}
             {% if post_data.public_authority == value %}
               {% set selected = 'selected="selected"' %}
               {% set style = '' %}
