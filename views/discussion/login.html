@@ -20,6 +20,12 @@
     <button class="btn btn-primary" type="submit" id="submit">{{ t('discussion', 'Sign in') }}</button>
   </form>
 </div>
+{% if additional_info_url is not empty %}
+  <script type="text/javascript">
+   var additionalInfoPageUrl = "{{additional_info_url}}";
+   parent.location.replace(additionalInfoPageUrl);
+  </script>
+{% endif %}
 {% if message.success is not empty %}  
 {% if user.admin is not empty %}
 <script type="text/javascript">
@@ -31,4 +37,4 @@
   var backPageUrl = "{{back_url}}";
   parent.location.replace(backPageUrl);
 </script>
-{% endif %}  
+{% endif %}
