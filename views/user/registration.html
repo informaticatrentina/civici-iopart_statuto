@@ -58,8 +58,7 @@
     {% set ahref_link = {'{ahref_start_tag}': '<a href="http://www.provincia.tn.it/privacy" target="_blank">', '{ahref_end_tag}' : '</a>'} %}
     <label class="checkbox">
       <input type="checkbox" required name="privacy_policy" id="register-privacy" {{checked}} value="privacy_policy">
-      <i>{{t('discussion', 'I have read the {ahref_start_tag} privacy {ahref_end_tag} and I authorize the processing of personal data under
-        Article. 13 of Legislative Decree no. 196/2003', ahref_link)}}</i>
+      <i>{{t('discussion', 'I have read the {ahref_start_tag} privacy {ahref_end_tag} and I authorize the processing of personal data under Article. 13 of Legislative Decree no. 196/2003', ahref_link)}}</i>
     </label>
     <button class="btn btn-primary small" type="submit" id="register-submit">{{t('discussion', 'Register')}}</button>
     <hr>
