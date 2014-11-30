@@ -1,10 +1,10 @@
 <div class="container">
-  <div>
-    <center><h5>{{t('discussion', 'User Information')}}</h5></center>
-    <hr/>
-  </div>
   <form role="form" method="POST" action="" id="additional-info-form">
-    <div class="form-group alert-error" id="error-msg">{{message}}</div>      
+    <div>
+      <center><h5>{{t('discussion', 'User Information')}}</h5></center>
+      <hr/>
+    </div>
+    <div class="form-group alert-error" id="error-msg">{{message}}</div>
     {% if additional_info.age is not empty %}
       <div class="form-group">
         <label for="age"> {{additional_info.age.text}} </label>
