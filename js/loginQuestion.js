@@ -1,8 +1,16 @@
 $(document).ready(function() {
   $('#save-additional-info').click(function(e) {
     e.preventDefault();
-    if ($('#age').val() == '') {
+    if ($('#age-range').val() == '') {
+      $('#error-msg').html(Yii.t('js', 'Please select age range'));
+      return false;
+    }
+    var age = $('#age').val();
+    if (age == '') {
       $('#error-msg').html(Yii.t('js', 'Please select age'));
+      return false;
+    } else if (!(/^[0-9]+$/.test(age))) {
+      $('#error-msg').html(Yii.t('js', 'Please add valid age'));
       return false;
     }
     if ($('#gender').val() == '') {
