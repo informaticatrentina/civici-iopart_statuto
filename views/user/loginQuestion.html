@@ -27,7 +27,7 @@
         {% if post_data.age is not empty %}
           {% set ageValue = post_data.age %}
         {% endif %}
-        <input id="age" class="input-block-level" type="text" placeholder="{{t('discussion','age') }}" name="age" value="{{ageValue}}">
+        <input id="age" class="input-block-level" type="text" maxlength="2" placeholder="{{t('discussion','age') }}" name="age" value="{{ageValue}}">
       </div>
     {% endif %}
     {% if additional_info.gender is not empty %}
