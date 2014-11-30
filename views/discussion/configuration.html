@@ -5,13 +5,50 @@
         <th>{{ t('discussion','Configuration Name') }}</th>
         <th>{{ t('discussion','Configuration Value') }}</th>
         {% for configuration in configurations %}
-        <tr>
-          <td class='hidden'>{{ configuration.name_key }}</td>
-          <td class='name'>{{ configuration.name }}</td>
-          <td class='value'>{{ configuration.value }}</td>
-        </tr>
+          {% if configuration.name_key != 'user_additional_info_question' %}
+            {% if configuration.name_key == 'additional_information_status' and configuration.value == 1 %}
+              {% set configuration = { 'name' : configuration.name ~ '<br/><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Show question for addtional information</button>', 
+                                       'value' : configuration.value,
+                                       'name_key': configuration.name_key
+                                     }
+              %}
+            {% endif %}
+            <tr>
+              <td class='hidden'>{{ configuration.name_key }}</td>
+              <td class='name'>{{ configuration.name }}</td>
+              <td class='value'>{{ configuration.value }}</td>
+            </tr>
+          {% endif %}
         {% endfor %}
       </table>
       <br/>
   </div>
 </div>
+
+<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <form role="form" action="" method="POST" id="additional-info-question-form">
+    <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">Select Question For Additional User Information</h3>
+    </div>
+    <div class="modal-body" style='padding-left: 150px;'>
+      <div id="error" style="display:none;"></div>
+      {% for key, question in additional_info_question %}
+        {% set checked = '' %}
+        {% if key in configurations.user_additional_info_question.value %}
+          {% set checked = 'checked="checked"' %}
+        {% endif %}
+        <label class="checkbox">
+          <input class='question-list' type="checkbox" {{checked}} name="additinal_user_info_question[]" value="{{key}}">{{question.text}}
+        </label>
+      {% endfor %}
+    </div>
+    <div class="modal-footer">
+      <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+      <button id="save-additional-info-question" class="btn btn-primary">Save changes</button>
+    </div>
+  </form>
+</div>
+<script type="text/javascript">
+  var saveQuestionUrl = "{{constant('BASE_URL')}}" + 'question/save';
+</script>

@@ -1,5 +1,8 @@
 $(document).ready(function() {
   $("table tr td").on('blur', "input[type='text'], textarea", function(e) {
+    if ($(this).siblings('.action').val() == 'additional_information_status') {
+      setHtmlForAdditionalUserInformation($(this));
+    }
     $.ajax({
       url: document.URL,
       type: 'POST',
@@ -22,4 +25,43 @@ $(document).ready(function() {
       $(this).append(action);
     }
   });
+
+  $('#save-additional-info-question').click(function() {
+    if (!$('.question-list').is(":checked")) {
+      $('#error').show();
+      $('#error').addClass('alert-error');
+      $('#error').removeClass('alert-success');
+      $('#error').html(Yii.t('js', 'Please select atleast one checkbox'));
+      return false;
+    }
+    $.ajax({
+      url: saveQuestionUrl,
+      type: 'POST',
+      data: $('#additional-info-question-form').serialize(),
+      dataType: 'json',
+      success: function(resp) {
+        if (resp.status) {
+          $('#error').addClass('alert-success');
+          $('#error').removeClass('alert-error');
+        } else {
+          $('#error').addClass('alert-error');
+          $('#error').removeClass('alert-success');
+        }
+        $('#error').show();
+        $('#error').html(resp.msg);
+      },
+      error: function() {
+        $('#error').hide();
+      }
+    });
+    return false;
+  });
 });
+
+function setHtmlForAdditionalUserInformation(area) {
+  var html = 'Getting additional user information. (Use 0 for OFF and 1 for ON)';
+  if ($(area).val() == 1) {
+    html += '<br/><button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Show question for addtional information</button>';
+  }
+  $(area).parent('.value').siblings('.name').html(html);
+}
