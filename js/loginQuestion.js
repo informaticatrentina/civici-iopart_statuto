@@ -3,44 +3,54 @@ $(document).ready(function() {
     e.preventDefault();
     if ($('#age-range').val() == '') {
       $('#error-msg').html(Yii.t('js', 'Please select age range'));
+      focusOnError();
       return false;
     }
     var age = $('#age').val();
     if (age == '') {
       $('#error-msg').html(Yii.t('js', 'Please select age'));
+      focusOnError();
       return false;
     } else if (!(/^[0-9]+$/.test(age))) {
       $('#error-msg').html(Yii.t('js', 'Please add valid age'));
+      focusOnError();
       return false;
     }
     if ($('#gender').val() == '') {
       $('#error-msg').html(Yii.t('js', 'Please select gender'));
+      focusOnError();
       return false;
     }
     var educationLevel = $('#education-level').val();
     if (educationLevel == '') {
       $('#error-msg').html(Yii.t('js', 'Please select education level'));
+      focusOnError();
       return false;
     } else if (educationLevel == 'other') {
       if ($.trim($('#education-level-description').val()) == '') {
         $('#error-msg').html(Yii.t('js', 'Please select education level'));
+	focusOnError();
         return false;
       }
     }
     if ($('#citizenship').val() == '') {
       $('#error-msg').html(Yii.t('js', 'Please select citizenship'));
+      focusOnError();
       return false;
     }
     if ($('#work').val() == '') {
       $('#error-msg').html(Yii.t('js', 'Please select work'));
+      focusOnError();
       return false;
     }
     if ($('#public-authority').val() == '') {
       $('#error-msg').html(Yii.t('js', 'Please select authority'));
+      focusOnError();
       return false;
     }
     if ($('#authority-description').val() == '') {
       $('#error-msg').html(Yii.t('js', 'Please add authority description'));
+      focusOnError();
       return false;
     }
     $('#additional-info-form').submit();
@@ -66,3 +76,7 @@ $(document).ready(function() {
     }
   });
 });
+
+function focusOnError() {
+ $("html, body").animate({ scrollTop: 0 }, 600);
+}
