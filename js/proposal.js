@@ -722,6 +722,10 @@ $(document).ready(function() {
         }
       }, 100);
   });
+
+  $('.add-new-proposal-btn').click(function() {
+    $('#formModal').modal('hide');
+  });
 });
 function chopUrl(url) {
   if (url == '') {

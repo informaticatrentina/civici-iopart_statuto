@@ -30,6 +30,10 @@
             <a href="#formModal" data-toggle="modal" class="btn btn-default">{{t('discussion', 'Add a new Proposal ')}}</a>
           </div>
         {% endif %}
+      {% else %}
+        <div class="pull-right" style="margin-top: 10px; margin-right:20px;margin-bottom: 10px;">
+          <a href="#formModal" data-toggle="modal" class="btn btn-default">{{t('discussion', 'Add a new Proposal ')}}</a>
+        </div>
       {% endif %}
     {% endif %}
   </div>
@@ -323,8 +327,8 @@
         </div>
       {% else %}
         <div class="modal-body"> 
-          <a href="http://www.civiclinks.it/it/a/register/?network={{constant('CIVICLINKS_NETWORK_TOKEN')}}">
-            <img src="{{constant('THEME_URL')}}images/pop-up.jpg" class="img-responsive" />
+          <a href="#" class="login-link add-new-proposal-btn">
+            <center>Per aggiungere una proposta esegui l'accesso</center>
           </a>
         </div>
       {%endif%}
