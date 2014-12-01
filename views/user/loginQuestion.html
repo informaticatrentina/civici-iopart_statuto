@@ -52,10 +52,10 @@
           <option value="">{{t('discussion','select eduction') }}</option>
           {% for key,value in additional_info.education_level.value %}
             {% set selected = '' %}
-            {% if post_data.education_level == value %}
+            {% if post_data.education_level == key %}
               {% set selected = 'selected="selected"' %}
             {% endif %} 
-            <option {{selected}} value="{{value}}">{{value}}</option>
+            <option {{selected}} value="{{key}}">{{value}}</option>
           {% endfor %}
         </select>
         {% set style = 'style="display:none;"' %}
@@ -72,10 +72,10 @@
           <option value="">{{t('discussion','select citizenship')}}</option>
           {% for key,value in additional_info.citizenship.value %}
             {% set selected = '' %}
-            {% if post_data.citizenship == value %}
+            {% if post_data.citizenship == key %}
               {% set selected = 'selected="selected"' %}
             {% endif %} 
-            <option {{selected}} value="{{value}}">{{value}}</option>
+            <option {{selected}} value="{{key}}">{{value}}</option>
           {% endfor %}
         </select>
       </div>      
@@ -87,10 +87,10 @@
           <option value="">{{t('discussion','select your work')}}</option>
           {% for key,value in additional_info.work.value %}
             {% set selected = '' %}
-            {% if post_data.work == value %}
+            {% if post_data.work == key %}
               {% set selected = 'selected="selected"' %}
             {% endif %}
-            <option {{selected}} value="{{value}}">{{value}}</option>
+            <option {{selected}} value="{{key}}">{{value}}</option>
           {% endfor %}
         </select>
       </div>      
@@ -103,11 +103,11 @@
           {% set style = 'style="display:none;"' %}
           {% for key,value in additional_info.public_authority.value %}
             {% set selected = '' %}
-            {% if post_data.public_authority == value %}
+            {% if post_data.public_authority == key %}
               {% set selected = 'selected="selected"' %}
               {% set style = '' %}
             {% endif %}
-            <option  {{selected}} value="{{value}}">{{value}}</option>
+            <option  {{selected}} value="{{key}}">{{value}}</option>
           {% endfor %}
         </select>
         <textarea row='3' name="authority_description" id='authority-description' {{style}}>{{post_data.authority_description}}</textarea>
