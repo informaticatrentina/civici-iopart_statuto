@@ -31,10 +31,12 @@ $(document).ready(function() {
     var proposalId = $(this).attr('proposal-id');
     var proposalTitle = $(this).siblings('td').children('.proposal-title').html();
     var proposalSummary = $(this).attr('proposal-summary');
+    var newProposalSummary = proposalSummary.replace(/<br \/>/g, '');
     var proposalDescription = $(this).siblings('.proposal-description').html(); 
+    var newProposalDescription = proposalDescription.replace(/<br>/g, '');
     $('#title').val(proposalTitle);
-    $('#proposal-summary').val(proposalSummary);
-    $('#proposal-description').val(proposalDescription);
+    $('#proposal-summary').val(newProposalSummary);
+    $('#proposal-description').val(newProposalDescription);
     $('#proposal-id').val(proposalId);
     $('#title, #proposal-summary').trigger('keyup');
    });

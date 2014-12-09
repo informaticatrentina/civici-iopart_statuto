@@ -49,7 +49,7 @@ $(document).ready(function() {
     $('#id').val(id);
     $('.proposal-id').val(id);
     var description = $(this).siblings('.summary').val();
-    var summary = $(this).children('summary').text();    
+    var summary = $(this).children('summary').html();    
     $('#proposal').html('');
     var propDiv = '<article><div class="clearfix"></div><p><summary>' + summary + '</summary></p><div class="clearfix"></div><p><description>' + description + '</description></p></article>';
     $('#proposal').append(propDiv);
