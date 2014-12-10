@@ -53,6 +53,30 @@ $(document).ready(function() {
       focusOnError();
       return false;
     }
+    var profession = $('#profession').val();
+    if (profession == '') {
+      $('#error-msg').html(Yii.t('js', 'Please select profession'));
+      focusOnError();
+      return false;
+    }
+    var residence = $('#residence').val();
+    if (residence == '') {
+      $('#error-msg').html(Yii.t('js', 'Please select residence'));
+      focusOnError();
+      return false;
+    }
+    var association = $('#association').val();
+    if (association == '') {
+      $('#error-msg').html(Yii.t('js', 'Please select association'));
+      focusOnError();
+      return false;
+    } else if (association == 'other') {
+      if ($.trim($('#association-description').val()) == '') {
+        $('#error-msg').html(Yii.t('js', 'Please select association'));
+	focusOnError();
+        return false;
+      }
+    }
     $('#additional-info-form').submit();
   });
   
@@ -73,6 +97,15 @@ $(document).ready(function() {
     } else {
       $('#authority-description').val('');     
       $('#authority-description').hide();     
+    }
+  });
+  $('#association').on('change', function() {
+    var association = $('#association').val();
+    if (association == 'other') {
+      $('#association-description').show();
+    } else {
+      $('#association-description').val('');
+      $('#association-description').hide();
     }
   });
 });

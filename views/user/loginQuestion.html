@@ -112,7 +112,47 @@
         </select>
         <textarea row='3' name="authority_description" id='authority-description' {{style}}>{{post_data.authority_description}}</textarea>
       </div>      
-    {% endif %}   
+    {% endif %}
+    {% if additional_info.profession is not empty %}
+      <div class="form-group">
+        <label for="profession">  {{additional_info.profession.text}}</label>
+        {% set professionValue = '' %}
+        {% if post_data.profession is not empty %}
+          {% set professionValue = post_data.profession %}
+        {% endif %}
+        <textarea id="profession" class="input-block-level" placeholder="{{t('discussion','profession') }}" name="profession" value="{{professionValue}}"></textarea>
+      </div>
+    {% endif %}
+    {% if additional_info.residence is not empty %}
+      <div class="form-group">
+        <label for="residence">  {{additional_info.residence.text}}</label>
+        {% set residenceValue = '' %}
+        {% if post_data.residence is not empty %}
+          {% set residenceValue = post_data.residence %}
+        {% endif %}
+        <textarea id="residence" class="input-block-level" placeholder="{{t('discussion','residence') }}" name="residence" value="{{residenceValue}}"></textarea>
+      </div>
+    {% endif %}
+    {% if additional_info.association is not empty %}
+      <div class="form-group">
+        <label for="association"> {{additional_info.association.text}} </label>
+        <select name="association" id="association">
+          <option value="">{{t('discussion','select association') }}</option>
+          {% for key,value in additional_info.association.value %}
+            {% set selected = '' %}
+            {% if post_data.association == key %}
+              {% set selected = 'selected="selected"' %}
+            {% endif %}
+            <option {{selected}} value="{{key}}">{{value}}</option>
+          {% endfor %}
+        </select>
+        {% set style = 'style="display:none;"' %}
+        {% if post_data.association_description is not empty %}
+          {% set style = '' %}
+        {% endif %}
+        <textarea row='3' name="association_description" id='association-description' {{style}}>{{post_data.association_description}}</textarea>
+      </div>
+    {% endif %}
     <div class="form-group">
        <input type="button" class='btn btn-primary' id="save-additional-info" name="save_additional_info" value="{{t('discussion', 'save')}}">
     </div>      
