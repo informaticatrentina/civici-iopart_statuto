@@ -120,7 +120,7 @@
         {% if post_data.profession is not empty %}
           {% set professionValue = post_data.profession %}
         {% endif %}
-        <textarea id="profession" class="input-block-level" placeholder="{{t('discussion','profession') }}" name="profession" value="{{professionValue}}"></textarea>
+        <textarea id="profession" class="input-block-level" placeholder="{{t('discussion','profession') }}" name="profession">{{professionValue}}</textarea>
       </div>
     {% endif %}
     {% if additional_info.residence is not empty %}
@@ -130,7 +130,7 @@
         {% if post_data.residence is not empty %}
           {% set residenceValue = post_data.residence %}
         {% endif %}
-        <textarea id="residence" class="input-block-level" placeholder="{{t('discussion','residence') }}" name="residence" value="{{residenceValue}}"></textarea>
+        <textarea id="residence" class="input-block-level" placeholder="{{t('discussion','residence') }}" name="residence">{{residenceValue}}</textarea>
       </div>
     {% endif %}
     {% if additional_info.association is not empty %}
