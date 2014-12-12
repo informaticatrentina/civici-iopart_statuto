@@ -1,7 +1,7 @@
 jQuery(document).ready(function() {
   $.reject({
     reject: {
-      msie: 9
+      msie: 8
     },
     header: '', // Header Text
     paragraph1: 'Sito ottimizzato per browser di ultima generazione quali Chrome, Firefox, Safari; Internet Explorer versione 11 o superiore. Con versioni precedenti si potrebbero verificare problemi di visualizzazione.', // Paragraph 1  
