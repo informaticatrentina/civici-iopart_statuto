@@ -18,17 +18,28 @@
       <input type="checkbox" value="remember-me"> {{ t('discussion', 'Remember me') }}
     </label>
     <button class="btn btn-primary" type="submit" id="submit">{{ t('discussion', 'Sign in') }}</button>
+    <button class="btn btn-primary" type="btn" id="forgot-password" style='margin-top: 15px;'>{{ t('discussion', 'Forgot password') }}</button>
   </form>
 </div>
-{% if message.success is not empty %}  
-{% if user.admin is not empty %}
 <script type="text/javascript">
-  var contestUrl = "{{user.url}}";
-  parent.location.replace(contestUrl);
-</script>
+   var forgotPasswordPageUrl = "{{constant('BASE_URL')}}" + 'user/forgot-password';
+ </script>
+{% if additional_info_url is not empty %}
+  <script type="text/javascript">
+   var additionalInfoPageUrl = "{{additional_info_url}}";
+   parent.location.replace(additionalInfoPageUrl);
+  </script>
+{% else %}
+  {% if message.success is not empty %}
+    {% if user.admin is not empty %}
+      <script type="text/javascript">
+        var contestUrl = "{{user.url}}";
+        parent.location.replace(contestUrl);
+      </script>
+    {% endif %}
+    <script type="text/javascript">
+      var backPageUrl = "{{back_url}}";
+      parent.location.replace(backPageUrl);
+    </script>
+  {% endif %}
 {% endif %}
-<script type="text/javascript">
-  var backPageUrl = "{{back_url}}";
-  parent.location.replace(backPageUrl);
-</script>
-{% endif %}  

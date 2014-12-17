@@ -35,17 +35,37 @@
     {% endif %}
     <input type="password" class="input-block-level" name ="password" value="{{password}}" id="password" placeholder="{{t('discussion', 'Password')}}">
     
+    {% set confirmPassword = '' %}
+    {% if user.confirm_password is not empty %}
+      {% set confirmPassword = user.confirm_password %}
+    {% endif %}
+    <input type="password" class="input-block-level" name ="confirm_password" value="{{confirmPassword}}" id="confirm-password" placeholder="{{t('discussion', 'Confirm Password')}}">
+
     {% set checked = '' %}
-    {% if user.terms is not empty %}
+    {% if user.terms_and_condition is not empty %}
       {% set checked = 'checked' %}
     {% endif %}
+    {% set ahref_link = {'{ahref_start_tag}': '<a href="http://partecipa.tn.it/tos" target="_blank">', '{ahref_end_tag}' : '</a>'} %}
     <label class="checkbox">
-      <input type="checkbox" required name="terms" id="register-terms" {{checked}} value="terms"> {{t('discussion', 'Accept the terms of Service')}}
+      <input type="checkbox"  required name="terms_and_condition" id="register-terms" {{checked}} value="terms_and_condition">
+      <i>{{t('discussion', 'I agree to the principles and {ahref_start_tag} the terms of service {ahref_end_tag}', ahref_link)}}</i>
+    </label>
+
+    {% set checked = '' %}
+    {% if user.privacy_policy is not empty %}
+      {% set checked = 'checked' %}
+    {% endif %}
+    {% set ahref_link = {'{ahref_start_tag}': '<a href="http://www.provincia.tn.it/privacy" target="_blank">', '{ahref_end_tag}' : '</a>'} %}
+    <label class="checkbox">
+      <input type="checkbox" required name="privacy_policy" id="register-privacy" {{checked}} value="privacy_policy">
+      <i>{{t('discussion', 'I have read the {ahref_start_tag} privacy {ahref_end_tag} and I authorize the processing of personal data under Article. 13 of Legislative Decree no. 196/2003', ahref_link)}}</i>
     </label>
     <button class="btn btn-primary small" type="submit" id="register-submit">{{t('discussion', 'Register')}}</button>
     <hr>
     {{t('discussion', 'Do you already have an account ?')}}
     <a href="{{constant('BASE_URL')}}login" class="btn btn-primary" style="margin-right:10px;">{{t('discussion', 'Login')}}</a>
+    <hr />
+    <p><a href="http://partecipa.tn.it/principi" target="_blank"><img src="{{constant('THEME_URL')}}images/principi-box.png" alt="principi" /></a></p>
   </form>
 </div> 
 {% if message.success is not empty %}  

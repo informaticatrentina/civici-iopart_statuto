@@ -16,4 +16,9 @@ $(document).ready(function() {
             return false;
         }
     });
-})
+
+  $('#forgot-password').click(function() {
+    window.location.replace(forgotPasswordPageUrl);
+    return false;
+  });
+});
