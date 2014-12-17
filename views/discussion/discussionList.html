@@ -14,7 +14,11 @@
       <th>{{ t('discussion','Discussion Summary') }}</th>
       <th>{{ t('discussion','Discussion Author') }}</th>
       <th>{{ t('discussion', 'Sorting Order') }}</th>
-      <th>{{ t('discussion','Edit') }}</th>      
+      <th>{{ t('discussion', 'Proposal Count') }}</th>
+      <th>{{ t('discussion', 'Opinion Count') }}</th>
+      <th>{{ t('discussion', 'No of user') }}</th>
+      <th>{{ t('discussion','Statistics') }}</th>
+      <th>{{ t('discussion','Edit') }}</th>
       <th>{{ t('discussion','View Proposals') }}</th>
       {% for info in discussionInfo %}
       <tr>
@@ -22,6 +26,10 @@
         <td>{{ info.discussionSummary }}</td>
         <td>{{ info.discussionAuthor }}</td>
         <td><input type="text" size="2" maxlength="2" discussion-slug="{{info.discussionSlug}}" value="{{info.discussionOrder}}" class="sort-order span1" /></td>
+        <td>{{ info.proposalCount }}</td>
+        <td>{{ info.opinionCount}}</td>
+        <td>{{ info.userCount}}</td>
+        <td><a href="{{constant('BASE_URL')}}admin/discussion/statistics/{{ info.discussionId }}">{{ t('discussion','Statistics')}}</a></td>
         <td><a href="{{constant('BASE_URL')}}admin/discussion/edit/{{ info.discussionSlug }}">{{ t('discussion','Edit')}}</a></td>
         <td><a href="{{constant('BASE_URL')}}discussion/proposal/list/{{ info.discussionSlug }}">{{ t('discussion','View Proposals')}}</a></td>
       </tr>
