@@ -56,6 +56,14 @@ $(document).ready(function() {
     });
     return false;
   });
+
+  $('.proposal-sorting-option').click(function() {
+    $.ajax({
+      url: document.URL,
+      type: 'POST',
+      data: {key: 'proposal_sorting_base', value: $(this).val()},
+    });
+  });
 });
 
 function setHtmlForAdditionalUserInformation(area) {

@@ -13,6 +13,21 @@
                                      }
               %}
             {% endif %}
+            {% if configuration.name_key == 'proposal_sorting_base' %}
+              {% set proposalSortingHtml = '' %}
+              {% for key,sorting_order in  proposal_sorting %}
+                {% set proposalChecked = '' %}
+                {% if key == configuration.value %}
+                  {% set proposalChecked = 'checked="checked"' %}
+                {% endif %}
+                {% set proposalSortingHtml = proposalSortingHtml ~ '<input class="proposal-sorting-option"' ~ proposalChecked ~ 'type="radio" name="proposal_sorting" value="' ~ key ~ '">&nbsp;&nbsp;' ~ sorting_order %}
+              {% endfor %}
+              {% set configuration = { 'name' : 'Proposal sorting',
+                                       'value' : proposalSortingHtml,
+                                       'name_key': configuration.name_key
+                                     }
+              %}
+            {% endif %}
             <tr>
               <td class='hidden'>{{ configuration.name_key }}</td>
               <td class='name'>{{ configuration.name }}</td>
