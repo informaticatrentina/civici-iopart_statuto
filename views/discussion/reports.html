@@ -33,6 +33,7 @@
           <th class="sorter-false">{{ t('discussion','View opinions') }}</th>
           <th class="sorter-false">{{ t('discussion','View links') }}</th>
           <th class="sorter-false">{{ t('discussion','Status') }}</th>
+          <th>{{ t('discussion', 'Sorting Order') }}</th>
         {% endif %}
         {% if isHighlighter == true %}
           <th>{{ t('discussion','Highlight Proposal') }}</th>
@@ -86,6 +87,7 @@
             <span style="display:none;" class="loading-image"><img src="{{constant('THEME_URL')}}images/loader.gif" alt="loading..." /></span> 
           </td>
         {% endif %}
+        <td><input type="text" size="2" maxlength="2" proposal-id="{{proposal.id}}" value="{{proposal.sorting_order}}" class="proposal-sorting-order r span1" /></td>
       {% endif %}
       {% if isHighlighter == true %}
         <td>
@@ -153,4 +155,5 @@
   var title = "{{constant('TITLE')}}";
   var tcharLimit = "{{title_char}}";
   var icharLimit = "{{intro_char}}";
+  var baseUrl = "{{constant('BASE_URL')}}";
 </script>
