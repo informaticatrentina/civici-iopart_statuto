@@ -21,6 +21,12 @@
 
     <script src="{{constant('THEME_URL')}}js/userRegistration.js"></script>
     <script src="{{constant('THEME_URL')}}js/login.js"></script>
-    <script src="{{constant('THEME_URL')}}js/bootstrap.js"></script>    
+    <script src="{{constant('THEME_URL')}}js/bootstrap.js"></script>
+    <script type="text/javascript" src="{{constant('THEME_URL')}}js/jquery.placeholder.js"></script>
+    <script>
+      jQuery(document).ready(function() {
+        $('input, textarea').placeholder();
+      });
+    </script>
   </body>
 </html>
