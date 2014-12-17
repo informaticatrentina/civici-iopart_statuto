@@ -156,10 +156,8 @@ Carousel
 	position: absolute;
 	top: 18px;
 	display: block;
-	text-indent: -5000px;
 	width: 165px;
 	height: 56px;
-	background-image: url('../images/logo-partecipa.jpg');
 }
 
 .psp-logo
