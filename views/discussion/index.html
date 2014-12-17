@@ -2,60 +2,60 @@
   <div class="row-fluid">
     <div class="span12" style="position:relative;">
       <div class="border-line">
-        <h1 class="site-title">
-          <a class="partecipa-logo" rel="home" title="Io Partecipo" href="{{constant('BASE_URL')}}">Io Partecipo</a>
-        </h1>
-        <div class="psp-logo">
-          <a href="http://www.provincia.trento.it"><img src="{{constant('THEME_URL')}}images/pat.png" alt="psp"></a>
-        </div>
-
+        {% if homeDetails is not empty %}
+          {% if homeDetails.main_logo is not empty %}
+            <h1 class="site-title">
+              <a class="partecipa-logo" rel="home" title="Io Partecipo" href="{{constant('BASE_URL')}}"><img src="{{constant('BASE_URL')}}{{homeDetails.main_logo}}" alt="Io Partecipo"></a>
+            </h1>
+          {% endif %}
+        {% endif %}
+        {% if homeDetails is not empty %}
+          {% if homeDetails.sub_logo is not empty %}
+            <div class="psp-logo">
+              <a href="http://www.provincia.trento.it"><img src="{{constant('BASE_URL')}}{{homeDetails.sub_logo}}" alt="psp"></a>
+            </div>
+          {% endif %}
+        {% endif %}
       </div>
     </div>
   </div>
-
-
-  <div class="row-fluid">
-      <div class="span12">
-          <div class="banner">
-              <img src="{{constant('THEME_URL')}}images/hd.png" alt="banner" />
+  {% if homeDetails is not empty %}
+    {% if homeDetails.banner is not empty %}
+      <div class="row-fluid">
+          <div class="span12">
+              <div class="banner">
+                  <img src="{{constant('BASE_URL')}}{{homeDetails.banner}}" alt="banner" />
+              </div>
           </div>
       </div>
-  </div>
-
-  <div class="row-fluid">
-    <div class="span12">
-      <div class="introtxt">
-        <h3>Benvenuti nell'area dedicata alla consultazione pubblica sul testo preliminare del Piano per la salute del Trentino.</h3>
-
-        <p>La consultazione riguarda il testo preliminare del <strong>Piano per la salute del Trentino</strong> elaborato da un gruppo di regia socio-sanitaria del <strong>Dipartimento di Salute e Solidarietà sociale</strong>.</p>
-
-        <p>La <strong>salute</strong> è un <strong>diritto</strong> e una <strong>risorsa dell'individuo e della comunità</strong> connessa allo sviluppo complessivo della società e non semplicemente un bene da ripristinare in caso di danneggiamento. È il <strong>risultato di un intreccio di fattori</strong> di natura individuale, sociale, economica, culturale e ambientale (i cosiddetti determinanti della salute). È <strong>legata agli stili di vita</strong>, in parte scelti da ciascuno e in parte condizionati dal contesto.</p>
-
-        <p>Il Piano produrrà effetti per i prossimi <strong>dieci anni</strong> (2015-2025), ha una importante <strong>valenza strategica</strong>, ha l'obiettivo di <strong>definire linee di indirizzo</strong> per migliorare la salute e va <strong>costruito in modo condiviso</strong>, con l'apporto di tutti i settori dell'amministrazione pubblica, del governo nel suo insieme e della società civile trentina.</p>
-
-        <p>Il testo preliminare in discussione si articola in <strong>cinque temi</strong>, tre di carattere specifico e due di carattere trasversale, e <strong>alcune proposte</strong> per ciascun tema.</p>
-
-        <p><strong>Registrati</strong> al sito e <strong>partecipa</strong> alla consultazione! Potrai <strong>commentare, valutare le proposte e aggiungerne di nuove</strong>, arricchendo la discussione.</p>
-
-        <p>Dal <strong>1 dicembre 2014 al 31 gennaio 2015</strong> la consultazione è aperta al <strong>contributo di esperti</strong> (soggetti rappresentativi di servizi, enti, istituzioni e associazioni che si occupano di salute). Dal 1 marzo al 30 aprile 2015 la consultazione sarà aperta alla popolazione.</p>
-
-        <p>Al termine delle due fasi di consultazione <strong>tutte le opinioni e le proposte saranno discusse e valutate</strong> sulla base di criteri predefiniti e resi pubblici. I <strong>contenuti raccolti contribuiranno alla formulazione del testo definitivo</strong> del Piano per la salute del Trentino. Da quest'ultimo discenderanno poi i piani attuativi a scadenze più ravvicinate e i progetti più specifici.</p>
-
-        <p>Per <strong>approfondire</strong>:</p>
-        <ul>
-          <li><a href="{{constant('THEME_URL')}}files/piano-per-la-salute-testo-preliminare-ottobre-2014.pdf" title="Scarica" target="_blank">Testo preliminare Piano per la salute del Trentino</a></li>
-          <li><a href="{{constant('THEME_URL')}}files/profilo-di-salute-della-provincia-di-trento.pdf" title="Scarica" target="_blank">Profilo di salute della Provincia di Trento</a></li>
-          <li><a href="{{constant('THEME_URL')}}files/come-funziona.pdf" title="Scarica" target="_blank">Come funziona</a></li>
-        </ul>
-        <br />
-        <iframe width="450" height="255" src="https://www.youtube.com/embed/3ygEEvbICM8?rel=0" frameborder="0" allowfullscreen></iframe>
+    {% endif %}
+  {% endif %}
+  {% if homeDetails is not empty %}
+    {% if homeDetails.introduction_text is not empty %}
+      <div class="row-fluid">
+        <div class="span12">
+          <div class="introtxt">
+            {{homeDetails.introduction_text}}
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-
+    {% endif %}
+  {% endif %}
   {% if submission !=1 %}<br />{{text}}{%endif%}
-
-
+  {% set layoutWidth = 'span6' %}
+  {% if homeDetails is not empty %}
+    {% if homeDetails.layout is not empty %}
+      {% if homeDetails.layout == 1 %}
+        {% set layoutWidth = 'span12' %}
+      {% elseif homeDetails.layout == 2 %}
+        {% set layoutWidth = 'span6' %}
+      {% elseif homeDetails.layout == 3 %}
+        {% set layoutWidth = 'span4' %}
+      {% elseif homeDetails.layout == 4 %}
+        {% set layoutWidth = 'span3' %}
+      {% endif %}
+    {% endif %}
+  {% endif %}
   {% for discussion in discussions %}
   <div class="row-fluid">
     {% for discusion in discussion%}
@@ -65,7 +65,7 @@
           {% set styleColor = colorv %}
         {%endif%}
       {% endfor %}
-      <div class="span6 themes {{styleColor}} by-{{discussion.author_id}}">
+      <div class="{{layoutWidth}} themes {{styleColor}} by-{{discussion.author_id}}">
       <a href="{{constant('BASE_URL')}}discussion/proposals/{{discusion.slug}}" class="linktotheme">
         <div class="title">{{ discusion.title }}</div>
         <p class="description">{{ discusion.summary }}</p>
