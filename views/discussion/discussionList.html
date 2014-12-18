@@ -1,13 +1,15 @@
 <div class="container">
   <div class="container darkheader">
     <div class="row">
-      <div class="span4">
+      <div class="span8">
         <a class="link admin-discussion-link" href="{{constant('BASE_URL')}}admin/discussion/add"> {{ t('discussion', 'Create Discussion')}}</a>
 <!--        &nbsp;&nbsp;|&nbsp;&nbsp;
         <a class="admin-discussion-link" href="{{constant('BASE_URL')}}admin/user/export"> {{ t('discussion', 'Export All Contributors')}}</a>
     -->  
         &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
         <a class="link admin-homepage-link" href="{{constant('BASE_URL')}}admin/config/homepage"> {{ t('discussion', 'Configure Home Page')}}</a>
+        &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+        <a class="link admin-allDiscussion-link" href="{{constant('BASE_URL')}}admin/all-discussion"> {{ t('discussion', 'View All Discussions')}}</a>
       </div>
     </div>
   </div>
@@ -23,6 +25,7 @@
       <th>{{ t('discussion','Statistics') }}</th>
       <th>{{ t('discussion','Edit') }}</th>
       <th>{{ t('discussion','View Proposals') }}</th>
+      <th>{{ t('discussion','Print Discussion') }}</th>
       {% for info in discussionInfo %}
       <tr>
         <td>{{ info.discussionTitle }}</td>
@@ -35,6 +38,7 @@
         <td><a href="{{constant('BASE_URL')}}admin/discussion/statistics/{{ info.discussionId }}">{{ t('discussion','Statistics')}}</a></td>
         <td><a href="{{constant('BASE_URL')}}admin/discussion/edit/{{ info.discussionSlug }}">{{ t('discussion','Edit')}}</a></td>
         <td><a href="{{constant('BASE_URL')}}discussion/proposal/list/{{ info.discussionSlug }}">{{ t('discussion','View Proposals')}}</a></td>
+        <td><a class="print_proposal" href="{{constant('BASE_URL')}}admin/discussion/allproposal/{{ info.discussionSlug }}">{{ t('discussion','Print Discussion')}}</a></td>
       </tr>
       {% endfor %}
     </table>
@@ -44,3 +48,4 @@
   var baseUrl = "{{constant('BASE_URL')}}";
 </script>
 <script src="{{constant('THEME_URL')}}js/discussionList.js"></script>
+<script src="{{constant('THEME_URL')}}js/jquery.printPage.js"></script>
