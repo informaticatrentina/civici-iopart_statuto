@@ -355,6 +355,15 @@ Landscape phone to portrait tablet
 	}
 	
 	.va-title { margin-left: 20px; }
+
+	.title {
+  font-family: "Roboto",helvetica,sans-serif;
+  font-size: 20px;
+  font-weight: 100;
+  line-height: 16px;
+  margin-bottom: 20px;
+  padding: 30px 40px 0;
+	}
 }
 
 /***************
