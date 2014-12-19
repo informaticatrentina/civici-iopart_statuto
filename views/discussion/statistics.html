@@ -12,14 +12,14 @@
   {% else %}
     {% for key, statistics in satistics_point %}
       <div class="row">
-        <input class="data-chart-type" type='radio' name="data_chart" value="{{key}}">{{statistics}}<br>
+        <input style="margin-bottom:10px; padding:5px;margin-right:10px;" class="data-chart-type" type='radio' name="data_chart" value="{{key}}">{{statistics}}<br>
       </div>
     {% endfor %}
   {% endif %}
 </div>
 <div id="line-chart" style="width: 500px; height: 300px"></div>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script> 
-<script type="text/javascript" src="{{constant(THEME_URL)}}js/statistics.js"></script> 
+<script type="text/javascript" src="{{constant('THEME_URL')}}js/statistics.js"></script> 
 <script>
-  var statistic_page = "{{constant(THEME_URL)}}admin/discussion/statistics/draw";
-</script>  
+  var statistic_page = "{{constant('BASE_URL')}}admin/discussion/statistics/draw";
+</script>
