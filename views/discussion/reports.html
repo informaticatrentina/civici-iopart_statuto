@@ -10,9 +10,14 @@
     </div>
     {% if isAdmin == true %}
       <div class="pull-right" style="margin-top: 10px; margin-right:20px;margin-bottom: 10px;">
-        <form method="post" action="{{constant('BASE_URL')}}admin/export/{{discussionId}}">
+        <form method="post" action="{{constant('BASE_URL')}}admin/export/{{discussionId}}/excel">
           <button class=" btn-info excel" >Export To Excel</button>
         </form>
+      </div>
+      <div class="pull-right" style="margin-top: 10px; margin-right:20px;margin-bottom: 10px;">
+        <a href="{{constant('BASE_URL')}}admin/export/{{discussionId}}/csv">
+          <button class=" btn-info excel" >Export To CSV</button>
+        </a>
       </div>
     {% endif %}
   </div>
