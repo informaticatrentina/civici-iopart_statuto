@@ -1,0 +1,25 @@
+<div class="container">
+  {% if response.success is empty %}
+    <div style="background-color:#f5f5f5; margin:25px 0px;">
+     <div class="row">
+       <div class="col-lg-12 col-md-12 col-xs-12">
+         <div style="padding:25px 25px;">    
+           <center><h6> {{response.msg}} </h6></center>
+         </div>
+       </div>
+     </div>
+   </div>
+  {% else %}
+    {% for key, statistics in satistics_point %}
+      <div class="row">
+        <input class="data-chart-type" type='radio' name="data_chart" value="{{key}}">{{statistics}}<br>
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>
+<div id="line-chart" style="width: 500px; height: 300px"></div>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script> 
+<script type="text/javascript" src="{{constant(THEME_URL)}}js/statistics.js"></script> 
+<script>
+  var statistic_page = "{{constant(THEME_URL)}}admin/discussion/statistics/draw";
+</script>  
