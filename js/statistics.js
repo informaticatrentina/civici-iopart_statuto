@@ -1,9 +1,13 @@
 google.load("visualization", "1", {packages: ["corechart"]});
 $(document).ready(function() {
   $('.data-chart-type').click(function() {
+    $('#statistics-error-block').hide();
+    $('#line-chart').show();
     var chartData = $(this).val();
     if (chartData == '') {
-      $('#line-chart').html('We are getting some error.');
+      $('#statistics-error-block').show();
+      $('#line-chart').hide();
+      $('#statistics-error-msg').html('We are getting some error.');
       return false;
     }   
     $.ajax({
@@ -17,11 +21,15 @@ $(document).ready(function() {
         if (resp.success) {
           drawChart(resp.data);
         } else {
-          $('#line-chart').html('We are getting some error.');
+          $('#statistics-error-msg').html('We are getting some error.');
+          $('#statistics-error-block').show();
+          $('#line-chart').hide();
         }   
       },  
       error: function(resp) {
-        $('#line-chart').html('We are getting some error.');
+        $('#statistics-error-msg').html('We are getting some error.');
+        $('#statistics-error-block').show();
+        $('#line-chart').hide();
       }   
     }); 
   }); 
