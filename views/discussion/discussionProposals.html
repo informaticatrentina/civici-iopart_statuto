@@ -12,34 +12,25 @@
     </div>
   </div>
 </div>
-<div class="title-bar">
-  <div class="container">
-    <div class="pull-left">
-      <h1>
-        {{ title }}
-      </h1>
-      <h5 class="subtitle">{{ summary }}</h5>
+<div class="container">
+  <div class="row">
+    <div class="title-bar col-lg-4 col-md-4 col-xs-12" style="margin-top:16px;">
+      <h1> {{ title }} </h1>
+      <h5 class="subtitle"> {{ summary }}  </h5>
       <div>
         {{ additionalDescription }}
+        {% if (submission_status == 1) %}
+          {% if App.session is not empty %}
+            {% if (App.session.user.canSubmitProposal == 1) %}
+              <a href="#formModal" data-toggle="modal" class="btn btn-default">{{t('discussion', 'Add a new Proposal ')}}</a>
+            {% endif %}
+          {% else %}
+            <a href="#formModal" data-toggle="modal" class="btn btn-default">{{t('discussion', 'Add a new Proposal ')}}</a>
+          {% endif %}
+        {% endif %}
       </div>
     </div>
-    {% if (submission_status == 1) %}
-      {% if App.session is not empty %}
-        {% if (App.session.user.canSubmitProposal == 1) %}
-          <div class="pull-right" style="margin-top: 10px; margin-right:20px;margin-bottom: 10px;">
-            <a href="#formModal" data-toggle="modal" class="btn btn-default">{{t('discussion', 'Add a new Proposal ')}}</a>
-          </div>
-        {% endif %}
-      {% else %}
-        <div class="pull-right" style="margin-top: 10px; margin-right:20px;margin-bottom: 10px;">
-          <a href="#formModal" data-toggle="modal" class="btn btn-default">{{t('discussion', 'Add a new Proposal ')}}</a>
-        </div>
-      {% endif %}
-    {% endif %}
-  </div>
-</div>
-<div class="container">
-  <div class="allproposals row {{ccolor}}">
+  <div class="allproposals col-lg-8 col-md-8 col-xs-12 {{ccolor}}">
     {% set count = 0 %}
     {% for proposal in proposals.data %}
       {% set highLightProposalBody = '' %}
@@ -56,7 +47,7 @@
           {% set postBoxWidth = 'col-lg-4 col-md-4 col-sm-4 col-xs-4' %}
         {% endif %}
       {% endif %}
-      <div class="post-box {{postBoxWidth}} singleProposal">
+      <div class="post-box singleProposal">
         <article class="proposal {{highLightProposalBody}} by-{{proposal.author.slug}} pid-{{proposal.id}}">
           <input class="auID" value="by-{{proposal.author.slug}}" type="hidden">
           <a class="openModal">
@@ -264,6 +255,7 @@
       </div>
     {% endfor %}
   </div>
+    </div>
 </div>
 <div id="formModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -376,13 +368,11 @@
 </div>
 <script>
   var title = "{{constant('TITLE')}}";
-          var imageUrl = "{{constant('PROFILE_IMAGE_URL')}}";
-          var imageSize = "{{constant('PROFILE_IMAGE_SIZE')}}";
-          var triangles = {{under}} ;
-          var colors = {{colors}};
-          var tcharLimit = "{{title_char}}";
-          var icharLimit = "{{intro_char}}";
-          var ocharLimit = "{{max_char_opinion}}";
+  var imageUrl = "{{constant('PROFILE_IMAGE_URL')}}";
+  var imageSize = "{{constant('PROFILE_IMAGE_SIZE')}}";
+  var triangles = {{under}} ;
+  var colors = {{colors}};
+  var tcharLimit = "{{title_char}}";
+  var icharLimit = "{{intro_char}}";
+  var ocharLimit = "{{max_char_opinion}}";
 </script>
-<script src="{{constant('THEME_URL')}}js/imagesloaded.pkgd.min.js"></script>
-<script src="{{constant('THEME_URL')}}js/masonry.pkgd.min.js"></script>

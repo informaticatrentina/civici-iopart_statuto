@@ -173,13 +173,6 @@ $(document).ready(function() {
     $('#formModal').modal('hide');
   });
   var $container = $('.allproposals');
-  $container.imagesLoaded(function() {    
-    $container.masonry({
-      itemSelector: '.post-box',
-      columnWidth: '.post-box',
-      transitionDuration: 0
-    });
-  });
   $('.opinionmap').mouseenter(function() {
     $(this).popover({title: Yii.t('js', 'Current Opinion'), trigger: 'hover', html: 'true', content: $(this).siblings('.pop').html(), placement: 'top'}).popover('show');
   });
