@@ -59,7 +59,7 @@
               {{ proposal.content.summary }}
             </summary>
           </a>
-          <input class="summary" value="{{ proposal.content.description|escape }}" type="hidden"/>
+          <input class="summary" value="{{ proposal.content.description }}" type="hidden"/>
           <input class="propId" value="{{ proposal.id }}" type="hidden"/>
           <input class="authName" value="{{ proposal.author.name }}" type="hidden"/>
           <input class="author-slug" value="{{proposal.author.slug}}" type="hidden"/>
