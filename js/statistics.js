@@ -39,8 +39,10 @@ function drawChart(respData) {
   data = respData.statistic_data;
   var data = google.visualization.arrayToDataTable(data);
   var options = { 
-     title: respData.title
+     title: respData.title,
+     is3D: true,
+     pieStartAngle: 100
   };  
-  var chart = new google.visualization.LineChart(document.getElementById('line-chart'));
+  var chart = new google.visualization.PieChart(document.getElementById('line-chart'));
   chart.draw(data, options);
 }
