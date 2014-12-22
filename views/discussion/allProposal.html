@@ -15,7 +15,14 @@
         <br/><br/>
         <div class="author">
           <img src="{{constant('PROFILE_IMAGE_URL')~proposal.0.author.slug}}/{{constant('PROFILE_IMAGE_SIZE')}}" class="avatar">
-            <div class="name">da  {{proposal.author.name}}</div>
+          <div class="name">da  {{proposal.author.name}}</div>
+          {% set userSlug = proposal.author.slug %}
+          {% if attribute(user, userSlug) is not empty %}
+            {% for authKey,authValue in attribute(user,userSlug) %}
+              {{authKey}}&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;{{authValue}}
+              <br/>
+            {% endfor %}
+          {% endif %}
         </div>
         <div class="row-fluid">
           <div class="span2 immagine">
@@ -62,6 +69,14 @@
             <img src="{{constant('PROFILE_IMAGE_URL')~value.author.slug}}/{{constant('PROFILE_IMAGE_SIZE')}}" class="avatar person"/>
             <div class="name">{{value.author.name}}</div>
             {{value.creation_date}}
+            <br/>
+            {% set userSlug = value.author.slug %}
+            {% if attribute(user, userSlug) is not empty %}
+              {% for authKey,authValue in attribute(user,userSlug) %}
+                {{authKey}}&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;{{authValue}}
+                <br/>
+              {% endfor %}
+            {% endif %}
             <p class="{{value.class}}">{{value.content.description}}</p>
           </div>
         {% endfor %}
