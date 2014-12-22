@@ -19,7 +19,7 @@
           {% set userSlug = proposal.author.slug %}
           {% if attribute(user, userSlug) is not empty %}
             {% for authKey,authValue in attribute(user,userSlug) %}
-              {{authKey}}&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;{{authValue}}
+              {{question[authKey].text}}&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;{{authValue}}
               <br/>
             {% endfor %}
           {% endif %}
@@ -73,7 +73,7 @@
             {% set userSlug = value.author.slug %}
             {% if attribute(user, userSlug) is not empty %}
               {% for authKey,authValue in attribute(user,userSlug) %}
-                {{authKey}}&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;{{authValue}}
+                {{question[authKey].text}}&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;{{authValue}}
                 <br/>
               {% endfor %}
             {% endif %}
