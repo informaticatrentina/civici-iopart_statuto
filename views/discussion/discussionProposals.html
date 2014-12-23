@@ -12,25 +12,71 @@
     </div>
   </div>
 </div>
+{% set discussionClass = '' %}
+{% if proposal_layout is not empty %}
+  {% if proposal_layout == 3 %}
+    <div class="title-bar">
+    {% set discussionClass = 'pull-left' %}
+  {% elseif proposal_layout == 1 %}
+    {% set discussionClass = 'row' %}
+  {% endif %}
+{% endif %}
 <div class="container">
-  <div class="row">
-    <div class="title-bar col-lg-4 col-md-4 col-xs-12" style="margin-top:16px;">
+  <div class="{{discussionClass}}">
+    {% if proposal_layout is not empty %}
+      {% if proposal_layout == 1 %}
+        <div class="title-bar col-lg-4 col-md-4 col-xs-12" style="margin-top:16px;">
+      {% endif %}
+    {% endif %}
       <h1> {{ title }} </h1>
       <h5 class="subtitle"> {{ summary }}  </h5>
       <div>
         {{ additionalDescription }}
+        {% if proposal_layout is not empty %}
+          {% if proposal_layout == 3 %}
+            </div>
+            </div>
+          {% endif %}
+        {% endif %}
         {% if (submission_status == 1) %}
           {% if App.session is not empty %}
             {% if (App.session.user.canSubmitProposal == 1) %}
-              <a href="#formModal" data-toggle="modal" class="btn btn-default">{{t('discussion', 'Add a new Proposal ')}}</a>
+              {% if proposal_layout is not empty %}
+                {% if proposal_layout == 1 %}
+                  <br>
+                  <a href="#formModal" data-toggle="modal" class="btn btn-default">{{t('discussion', 'Add a new Proposal ')}}</a>
+                {% elseif proposal_layout == 3 %}
+                  <div class="pull-right" style="margin-top: 10px; margin-right:20px;margin-bottom: 10px;">
+                    <a href="#formModal" data-toggle="modal" class="btn btn-default">{{t('discussion', 'Add a new Proposal ')}}</a>
+                  </div>
+                {% endif %}
+              {% endif %}
             {% endif %}
           {% else %}
-            <a href="#formModal" data-toggle="modal" class="btn btn-default">{{t('discussion', 'Add a new Proposal ')}}</a>
+            {% if proposal_layout is not empty %}
+              {% if proposal_layout == 1 %}
+                <br>
+                <a href="#formModal" data-toggle="modal" class="btn btn-default">{{t('discussion', 'Add a new Proposal ')}}</a>
+              {% elseif proposal_layout == 3 %}
+                <div class="pull-right" style="margin-top: 10px; margin-right:20px;margin-bottom: 10px;">
+                  <a href="#formModal" data-toggle="modal" class="btn btn-default">{{t('discussion', 'Add a new Proposal ')}}</a>
+                </div>
+              {% endif %}
+            {% endif %}
           {% endif %}
         {% endif %}
       </div>
     </div>
-  <div class="allproposals col-lg-8 col-md-8 col-xs-12 {{ccolor}}">
+  {% set allProposalClass = '' %}
+  {% if proposal_layout is not empty %}
+    {% if proposal_layout == 1 %}
+      {% set allProposalClass = 'col-lg-8 col-md-8 col-xs-12' %}
+    {% elseif proposal_layout == 3 %}
+      <div class="container">
+      {% set allProposalClass = 'row' %}
+    {% endif %}
+  {% endif %}
+  <div class="allproposals {{allProposalClass}} {{ccolor}}">
     {% set count = 0 %}
     {% for proposal in proposals.data %}
       {% set highLightProposalBody = '' %}
@@ -39,15 +85,15 @@
         {% set highLightProposalBody = 'highlighted-body' %}
         {% set highlightedProposalHeader = 'highlighted' %}
       {% endif %}
-      {% set postBoxWidth = 'col-lg-4 col-md-4 col-sm-4 col-xs-4' %}
+      {% set postBoxWidth = 'col-lg-4 col-md-4 col-sm-4 col-xs-12' %}
       {% if proposal_layout is not empty %}
         {% if proposal_layout == 1 %}
           {% set postBoxWidth = 'col-lg-12 col-md-12 col-sm-12 col-xs-12' %}
         {% elseif proposal_layout == 3 %}
-          {% set postBoxWidth = 'col-lg-4 col-md-4 col-sm-4 col-xs-4' %}
+          {% set postBoxWidth = 'col-lg-4 col-md-4 col-sm-4 col-xs-12' %}
         {% endif %}
       {% endif %}
-      <div class="post-box singleProposal">
+      <div class="post-box {{postBoxWidth}} singleProposal">
         <article class="proposal {{highLightProposalBody}} by-{{proposal.author.slug}} pid-{{proposal.id}}">
           <input class="auID" value="by-{{proposal.author.slug}}" type="hidden">
           <a class="openModal">
@@ -254,7 +300,11 @@
         {% set count = count + 1 %}
       </div>
     {% endfor %}
-  </div>
+  {% if proposal_layout is not empty %}
+    {% if proposal_layout == 1 %}
+      </div>
+    {% endif %}
+  {% endif %}  
     </div>
 </div>
 <div id="formModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -303,7 +353,7 @@
                 {% if proposal is not empty %}
                   {% if proposal.summary is not empty %}
                     {% set summary = proposal.summary %}
-                  {% endif %} 
+                  {% endif %}
                 {% endif %}
                 <textarea rows="3" maxlength="{{intro_char}}" class="form-control"  id="proposalIntroduction" name="summary">{{summary}}</textarea>
                 <div class="words">{{intro_char}}</div>
@@ -366,6 +416,10 @@
     </div>
   </div>
 </div>
+{% set proposalLayout = '' %}
+{% if proposal_layout is not empty %}
+  {% set proposalLayout = proposal_layout %}
+{% endif %}
 <script>
   var title = "{{constant('TITLE')}}";
   var imageUrl = "{{constant('PROFILE_IMAGE_URL')}}";
@@ -376,4 +430,11 @@
   var icharLimit = "{{intro_char}}";
   var ocharLimit = "{{max_char_opinion}}";
   var userProfileUrl = "{{constant('PROFILE_URL')}}";
+  var proposalColumns = "{{proposalLayout}}";
 </script>
+{% if proposal_layout is not empty %}
+  {% if proposal_layout == 3 %}
+    <script src="{{constant('THEME_URL')}}js/imagesloaded.pkgd.min.js"></script>
+    <script src="{{constant('THEME_URL')}}js/masonry.pkgd.min.js"></script>
+  {% endif %}
+{% endif %}
