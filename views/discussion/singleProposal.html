@@ -13,7 +13,7 @@
     <h2>{{proposal.0.title}}</h2>
     <div class="author">
       <img src="{{constant('PROFILE_IMAGE_URL')~proposal.0.author.slug}}/{{constant('PROFILE_IMAGE_SIZE')}}" class="avatar">
-        <div class="name">da  {{proposal.0.author.name}}</div>
+        <div class="name"><a href="{{constant('PROFILE_URL')}}{{proposal.0.author.slug}}">da  {{proposal.0.author.name}}</a></div>
     </div>
     <div class="row-fluid">
       <div class="span2 immagine">
@@ -52,7 +52,7 @@
         </g>
       </svg> 
       <img src="{{constant('PROFILE_IMAGE_URL')~value.author.slug}}/{{constant('PROFILE_IMAGE_SIZE')}}" class="avatar person"/>
-      <div class="name">{{value.author.name}}</div>
+      <div class="name"><a href="{{constant('PROFILE_URL')}}{{value.author.slug}}">{{value.author.name}}</a></div>
       <p class="{{value.class}}">{{value.content.description}}</p>
     </div>
     {% endfor %}

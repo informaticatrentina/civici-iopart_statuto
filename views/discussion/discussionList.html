@@ -30,7 +30,7 @@
       <tr>
         <td>{{ info.discussionTitle }}</td>
         <td>{{ info.discussionSummary }}</td>
-        <td>{{ info.discussionAuthor }}</td>
+        <td><a href="{{constant('PROFILE_URL')}}{{info.discussionAuthorSlug}}">{{ info.discussionAuthor }}</a></td>
         <td><input type="text" size="2" maxlength="2" discussion-slug="{{info.discussionSlug}}" value="{{info.discussionOrder}}" class="sort-order span1" /></td>
         <td>{{ info.proposalCount }}</td>
         <td>{{ info.opinionCount}}</td>

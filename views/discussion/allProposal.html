@@ -15,7 +15,7 @@
         <br/><br/>
         <div class="author">
           <img src="{{constant('PROFILE_IMAGE_URL')~proposal.0.author.slug}}/{{constant('PROFILE_IMAGE_SIZE')}}" class="avatar">
-          <div class="name">da  {{proposal.author.name}}</div>
+          <div class="name"><a href='{{constant("PROFILE_URL")}}{{proposal.author.slug}}'>da  {{proposal.author.name}}</a></div>
           {% set userSlug = proposal.author.slug %}
           {% if attribute(user, userSlug) is not empty %}
             {% for authKey,authValue in attribute(user,userSlug) %}
@@ -67,7 +67,7 @@
               </g>
             </svg> 
             <img src="{{constant('PROFILE_IMAGE_URL')~value.author.slug}}/{{constant('PROFILE_IMAGE_SIZE')}}" class="avatar person"/>
-            <div class="name">{{value.author.name}}</div>
+            <div class="name"><a href="{{constant('PROFILE_URL')}}{{value.author.slug}}">{{value.author.name}}</a></div>
             {{value.creation_date}}
             <br/>
             {% set userSlug = value.author.slug %}

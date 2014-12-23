@@ -40,7 +40,7 @@ $(document).ready(function() {
                          <img src="'+ img +'" class="img-responsive img-circle"> \n\
                        </div>\n\
                        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-9">\n\
-                         <h3 class="modal-title" id="myModalLabel">'+ title +'</h3>da '+ authorName +' \n\
+                         <h3 class="modal-title" id="myModalLabel">'+ title +'</h3><a href="' + userProfileUrl + authorSlug +'">da '+ authorName +'</a> \n\
                        </div>'
     $('#modalBox').children('.modal-dialog').children('.modal-content').children('.modal-header').children('.row').html(headerHtml);
     $('#modalBox').children('.modal-body').children('.content').append(propDiv);
