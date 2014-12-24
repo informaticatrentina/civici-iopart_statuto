@@ -28,6 +28,12 @@
       {% set email = user.email %}
     {% endif %}
     <input type="text" class="input-block-level" name ="email" value="{{email}}" id="email" placeholder="{{t('discussion', 'Email address')}}">
+
+    {% set cemail = '' %}
+    {% if user.cemail is not empty %}
+      {% set cemail = user.cemail %}
+    {% endif %}
+    <input type="text" class="input-block-level" name ="cemail" value="{{cemail}}" id="cemail" placeholder="{{t('discussion', 'Confirm Email')}}">
    
     {% set password = '' %}
     {% if user.password is not empty %}
@@ -61,6 +67,8 @@
       <i>{{t('discussion', 'I have read the {ahref_start_tag} privacy {ahref_end_tag} and I authorize the processing of personal data under Article. 13 of Legislative Decree no. 196/2003', ahref_link)}}</i>
     </label>
     <button class="btn btn-primary small" type="submit" id="register-submit">{{t('discussion', 'Register')}}</button>
+    <br/>
+    {{t('discussion', 'WARNING: Registration is successful only if you receive an email verification and account activation.')}}
     <hr>
     {{t('discussion', 'Do you already have an account ?')}}
     <a href="{{constant('BASE_URL')}}login" class="btn btn-primary" style="margin-right:10px;">{{t('discussion', 'Login')}}</a>

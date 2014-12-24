@@ -8,16 +8,6 @@ $(document).ready(function() {
          $('#error').html(Yii.t('js',"Please enter Last Name")).css('color','red');
         return false;
     } 
-    var password = $('#password').val();
-    if (password == '') {
-      $('#error').html(Yii.t('js', "Please enter Password")).css('color', 'red');
-      return false;
-    } 
-    var confirmPassword = $('#confirm-password').val();
-    if (confirmPassword == '') {
-      $('#error').html(Yii.t('js', "Please enter confirm password")).css('color', 'red');
-      return false;
-    }
     if (password != confirmPassword) {
       $('#error').html(Yii.t('js', "Password does not match")).css('color', 'red');
       return false;
@@ -29,6 +19,24 @@ $(document).ready(function() {
       return false;
     } else if (!emailRegExp.test(email)) {
       $('#error').html(Yii.t('js', 'Please enter valid email id')).css('color','red');
+      return false;
+    }
+    var cemail = $('#cemail').val();
+    if (cemail == '') {
+      $('#error').html(Yii.t('js',"Please enter same email id")).css('color','red');
+      return false;
+    } else if (email != cemail) {
+      $('#error').html(Yii.t('js',"Please enter same email id")).css('color','red');
+      return false;
+    }
+    var password = $('#password').val();
+    if (password == '') {
+      $('#error').html(Yii.t('js', "Please enter Password")).css('color', 'red');
+      return false;
+    }
+    var confirmPassword = $('#confirm-password').val();
+    if (confirmPassword == '') {
+      $('#error').html(Yii.t('js', "Please enter confirm password")).css('color', 'red');
       return false;
     }
     if ($('#register-terms').is(':checked') == false) {
