@@ -49,7 +49,11 @@
     <tr>
       <td><a class="proposalLinks proposal-title" href="{{constant('BASE_URL')}}discussion/{{slug}}/{{proposal.id}}">{{ proposal.title }}</a></td>
       <td class="proposal-description">{{ proposal.content.description }}</td>
-      <td><a href="{{constant('PROFILE_URL')}}{{proposal.author.slug}}">{{ proposal.author.name }}</a></td>
+      {% set authorEmail = '' %}
+      {% if attribute(emails, proposal.author.slug) is not empty %}
+        {% set authorEmail = attribute(emails, proposal.author.slug) %}
+      {% endif %}
+      <td><a href="mailto:{{authorEmail}}">{{ proposal.author.name }}</a></td>
       <td>{{ proposal.creation_date }}</td>
       {% if proposal.totalOpinion != '' %}
       <td>{{ proposal.totalOpinion }}</td>
