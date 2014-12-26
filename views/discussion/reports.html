@@ -1,5 +1,6 @@
 <link href="{{constant('THEME_URL')}}css/theme.bootstrap.css" rel="stylesheet">
 {% set isHighlighter = checkPermission('can_mark_highlighted') %}
+{% set canShowHideOpinion = checkPermission('can_show_hide_opinion') %}
 {% set isAdmin = checkPermission('admin') %}
 <div class="title-bar">
   <div class="container">
@@ -35,7 +36,11 @@
         <th class="sorter-false">{{ t('discussion','Triangle count') }}</th>
         {% if isAdmin == true %}
           <th class="sorter-false">{{ t('discussion','Edit') }}</th>
+        {% endif %}
+        {% if (isAdmin == true ) or (canShowHideOpinion == true)%}
           <th class="sorter-false">{{ t('discussion','View opinions') }}</th>
+        {% endif %}
+        {% if isAdmin == true %}
           <th class="sorter-false">{{ t('discussion','View links') }}</th>
           <th class="sorter-false">{{ t('discussion','Status') }}</th>
           <th>{{ t('discussion', 'Sorting Order') }}</th>
@@ -83,7 +88,11 @@
         <td class="edit-proposal" proposal-id="{{proposal.id}}" proposal-summary="{{proposal.content.summary}}">
           <a a href="#formModal" data-toggle="modal">{{t('discussion','Edit')}}</a>
         </td>
+      {% endif %}
+      {% if (isAdmin == true ) or (canShowHideOpinion == true)%}
         <td><a class="proposalLinks" href="{{constant('BASE_URL')}}discussion/proposals/{{slug}}/opinion?id={{proposal.id}}">{{ t('discussion','View opinions')}}</a></td>
+      {% endif %}
+      {% if isAdmin == true %}
         <td><a class="proposalLinks" href="{{constant('BASE_URL')}}discussion/proposals/{{slug}}/links?id={{proposal.id}}">{{ t('discussion','View links')}}</a></td>
         {% if proposal.status == 'active' %}
           <td>

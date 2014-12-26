@@ -190,6 +190,7 @@
                                 <div class="form-group">
                                   <textarea id="opiniontext" placeholder="aggiungi la tua opinione..." rows="5" name="opiniontext" class="form-control opiniontext" maxlength="{{max_char_opinion}}">
                                   </textarea>
+                                  <input type="hidden" name="opinion_box_text" value="" id="opinion-box-text">
                                   <div class="words">{{max_char_opinion}}</div>
                                 </div>
                                 <button  id="opinion-button"  class="post btn btn-primary" type="submit">{{ t('discussion' , 'Submit Opinion' ) }}</button>
@@ -420,6 +421,14 @@
 {% if proposal_layout is not empty %}
   {% set proposalLayout = proposal_layout %}
 {% endif %}
+{% set isCurator = false %}
+{% set loginUsername = '' %}
+{% set loginUserslug = '' %}
+{% if App.session is not empty %}
+  {% set isCurator = checkPermission('can_post_answers_on_opinion') %}
+  {% set loginUsername = App.session.user.firstname ~ ' ' ~ App.session.user.lastname %}
+  {% set loginUserslug = App.session.user.id %}
+{% endif %}
 <script>
   var title = "{{constant('TITLE')}}";
   var imageUrl = "{{constant('PROFILE_IMAGE_URL')}}";
@@ -431,6 +440,11 @@
   var ocharLimit = "{{max_char_opinion}}";
   var userProfileUrl = "{{constant('PROFILE_URL')}}";
   var proposalColumns = "{{proposalLayout}}";
+  var isCurator = "{{isCurator}}";
+  var loginUsername = "{{loginUsername}}";
+  var loginUserslug = "{{loginUserslug}}";
+  var imagePath = "{{constant('IMAGE_URL')}}";
+  var baseUrl = "{{constant('BASE_URL')}}";
 </script>
 {% if proposal_layout is not empty %}
   {% if proposal_layout == 3 %}

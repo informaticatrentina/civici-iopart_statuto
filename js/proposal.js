@@ -128,11 +128,23 @@ $(document).ready(function() {
                             </div>\n\
                             <div class="col-lg-10 col-md-10 col-sm-10 col-xs-9">\n\
                               <p><strong><a href=' + profileUrl + resp.msg.opinion[key].author.slug + '>' + resp.msg.opinion[key].author.name + '</a></strong> : <description>' + resp.msg.opinion[key].content.description + '</description>\n\
-                            </div>\n\
-                          </div>';
+                            ';
+            var opinionId = resp.msg.opinion[key].id;
+            var opinionInfo = resp.msg.answer_on_opinion[opinionId];
+            if (typeof opinionInfo != 'undefined') {
+             for(var i = 0; i < opinionInfo.length; i++) {
+                opinionBox += '<hr><p class="small">' + opinionInfo[i]['content']['description'] +
+                              ' - <strong>' + opinionInfo[i]['author']['name'] + '</strong></p>';
+              }
+            }
+            if (isCurator == true || authorSlug == loginUserslug) {
+              opinionBox += prepareAnswerHtml(opinionId);
+            }
+            opinionBox += '</div></div>';
             $('#opinion').children('.opinionbox').append(opinionBox);
             opinionBox = '';
           }
+          initializePopover();
         }
         if (resp.msg.link == 0) {
           $('.link-count').val(0);
@@ -337,14 +349,15 @@ $(document).ready(function() {
           return false;
         }
         textarea = resp.opinion_text;
+        $('#opinion-box-text').val(textarea);
         var div  = '<div ' + opinionClass +'>\n\
                      <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">\n\
                        <img class="img-responsive img-circle" src="' + image +'"/>\n\
                      </div>\n\
                      <div class="col-lg-10 col-md-10 col-sm-10 col-xs-9">\n\
-                       <p><strong><a href=' + authorid + '>' + author + '</a></strong> : <description>' + textarea + '</description>\n\
-                     </div>\n\
-                  </div>';
+                       <p><strong><a href=' + authorid + '>' + author + '</a></strong> : <description>' + textarea + '</description>';
+        div += prepareAnswerHtml(resp.opinion_id) + '</div></div>';
+        
         if (resp.msg) {
           pop = '<svg xml:space="preserve" enable-background="new -18.25 -18.75 200 180" viewBox="-18.25 -18.75 200 180" height="180px" width="200px" y="0px" x="0px" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1">\n\
               <text class="triangle-text" transform="matrix(1 0 0 1 63 -5.25)"  font-family="HelveticaNeue" font-size="11">Chiara</text>\n\
@@ -364,8 +377,9 @@ $(document).ready(function() {
         var text = $(button).parent('fieldset').siblings('.upd').val();
         if (text == 1) {
           $(button).parent('fieldset').parent('.opinionform').parent('div').parent('.row').siblings('.opinionbox').children('.row').each(function() {
-            if ($.trim($(this).find("strong > a").html()) == author) { 
-              $(this).replaceWith(div);
+            if ($.trim($(this).find("strong > a").html()) == author) {               
+              setOpinionComment();
+              setOpinionCountAndHeatMap(resp.msg);
             }
           });
           if (typeof(button.parents().children('.active').attr('class')) == 'undefined') {
@@ -399,9 +413,8 @@ $(document).ready(function() {
                                       <img class="img-responsive img-circle" src="' + image +'"/>\n\
                                     </div>\n\
                                     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-9">\n\
-                                      <p><strong><a href=' + authorid + '>' + author + '</a></strong> : <description>' + textarea + '</description>\n\
-                                    </div>\n\
-                                  </div>';
+                                      <p><strong><a href=' + authorid + '>' + author + '</a></strong> : <description>' + textarea + '</description>';
+            firstOpinionDiv += prepareAnswerHtml(resp.opinion_id) + '</div></div>';
             $(firstOpinionDiv).prependTo($(button).parent('fieldset').parent('.opinionform').parent('div').parent('.row').siblings('.opinionbox'));
             if (typeof(button.parents().children('.active').attr('class')) == 'undefined') {
               var popover = button.parents().siblings().children('.active').children('footer').children('.documeents').children('.opinionmap').data('popover');
@@ -728,6 +741,15 @@ $(document).ready(function() {
   $('.add-new-proposal-btn').click(function() {
     $('#formModal').modal('hide');
   });
+  
+  $(document.body).on('click', '.popover-test', function(e) {
+    e.preventDefault();
+  });
+  
+  $('#modalBox').on('click' ,'.save-answer', function(e) {
+    e.preventDefault();    
+    saveAnswerForOpinion($(this));
+  });
 });
 function chopUrl(url) {
   if (url == '') {
@@ -809,4 +831,147 @@ function openPreviousLinkModal() {
       $('#links').removeClass('active');
     }
   }
+}
+
+function prepareAnswerHtml(opinionId) {
+  var html = '<p>\n\
+                <input type="hidden" name="opinion_id" class="answer-opinion-id' + '" value = "' + opinionId + '"/>\n\
+                <a href="#" role="button" class="popover-test" title="" data-original-title="' + Yii.t('js', 'Your Reply') + ' ">'
+                  + Yii.t('js', 'Reply') + '\n\
+                </a>\n\
+              </p>';
+  return html;
+}
+function initializePopover() {
+  $('.popover-test').popover({
+    content: '<form role="form">\n\
+                <fieldset>\n\
+                  <div class="opinion-answer-error hidden alert-danger"></div>\n\
+                  <div class="form-group">\n\
+                    <textarea class="form-control" rows="5" placeholder="aggiungi la tua opinione..."></textarea>\n\
+                  </div>\n\
+                  <button class="btn btn-primary save-answer">' + Yii.t('js', 'submit') + '</button>\n\
+                  <span>\n\
+                    <img class="hidden save-comment-processing-image" src="' + imagePath + 'loader.gif" alt="' + Yii.t('js', 'processing') +'..." />\n\
+                  </span>\n\
+                </fieldset>\n\
+              </form>',
+    html: true
+  });
+}
+
+function saveAnswerForOpinion(self) {
+  var opinionId = $(self).parents('.popover:first').siblings('.answer-opinion-id').val();
+  var loadingImage = $(self).siblings('span').find('img');
+  var opinionAnswerError = $(self).siblings('.opinion-answer-error');
+  var articleClass = $(self).parents('#modalBox:first').siblings('article').attr('class');  
+  var proposalId = articleClass.split('pid-')[1];
+  $(opinionAnswerError).addClass('hidden');
+  var submittedAnswer = $(self).siblings('.form-group').find('textarea').val();
+  var profileUrl = $(self).parents('#modalBox:first').siblings('article').find('.profileUrl').val();
+  if ($.trim(submittedAnswer) == '') {
+    $(opinionAnswerError).removeClass('hidden');
+    $(opinionAnswerError).html(Yii.t('js', 'Reply can not be empty'));
+    return false;
+  }
+  $(self).hide();
+  $(loadingImage).removeClass('hidden');
+  $.ajax({
+    type: 'POST',
+    dataType: 'json',
+    url: baseUrl + 'discussion/proposal/opinion/answer',
+    data: { 
+      opinion_id: opinionId,
+      submitted_answer: submittedAnswer,
+      author_name: loginUsername,
+      author_slug: loginUserslug,
+      proposal_id: proposalId
+    },
+    success: function(resp) {
+      $(loadingImage).addClass('hidden');
+      $(self).show();
+      $(opinionAnswerError).removeClass('hidden alert-danger');
+      if (resp.success) {
+        $(opinionAnswerError).addClass('alert-success');
+        $(opinionAnswerError).html(resp.msg);
+        var answerHtml = '<hr><p class="small">' + resp.data + ' - <strong>' + loginUsername + '</strong></p>';
+        $(self).parents('.popover').parent('p').before(answerHtml);
+      } else {
+        $(opinionAnswerError).addClass('alert-danger');
+      }
+      $('[data-original-title]').popover('hide');
+    },
+    error: function() {
+      $(loadingImage).addClass('hidden');
+      $(self).removeClass('hidden');
+      $(opinionAnswerError).addClass('hidden');
+      alert(Yii.t('js', 'An error occured'));
+    }
+  });
+}
+
+function setOpinionComment() {
+  var index = $('.index').val();
+  var author = $('#author').val();
+  var authorid = $('#authorid').val();
+  var image = $('#authorImage').val();
+  var textarea = $('#opinion-box-text').val();
+  var opinionId = $('.id').val();
+  var opinionClassText = '';
+  if (index != '') {
+    if ($.inArray(parseInt(index), neutral) !== -1) {
+      opinionClassText = 'neutral';
+    } else if ($.inArray(parseInt(index), agree) !== -1) {
+      opinionClassText = 'agree';
+    } else {
+      opinionClassText = 'disagree';
+    }
+  }
+
+  var opinionClass = 'class = "row  ' + opinionClassText + '"';
+  var div = '<div ' + opinionClass + '>\n\
+              <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">\n\
+                <img class="img-responsive img-circle" src="' + image + '"/>\n\
+              </div>\n\
+              <div class="col-lg-10 col-md-10 col-sm-10 col-xs-9">\n\
+                <p><strong><a href=' + authorid + '>' + author + '</a></strong>'
+  if (textarea != '') {
+    div += ': <description>' + textarea + '</description>';
+  }
+  var isAddedAuthorOpinion = false;
+  var commentInOpinionBox = $('#opinion').children('.opinionbox').children('.row').length;
+  if (commentInOpinionBox == 1 && typeof($('#opinion').children('.opinionbox').children('.row').find("strong").html()) == "undefined") {
+    var answerHtml = '';
+    if (isCurator == true || authorSlug == loginUserslug) {
+      answerHtml = prepareAnswerHtml(opinionId);
+    }
+    answerHtml += '</div></div>';
+    $('#opinion').children('.opinionbox').html("<hr>" + div + answerHtml);
+    isAddedAuthorOpinion = true;
+  } else {
+    $('#opinion').children('.opinionbox').children('.row').each(function() {
+      if ($.trim($(this).find("strong > a").html()) == author) {
+        var answerHtml = '';
+        if (typeof($(this).find('.small').html()) != 'undefined') {
+          $(this).find('.small').each(function() {
+            answerHtml += '<hr><p class="small">' + $(this).html() + '</p>';
+          });
+        }
+        if (isCurator == true || authorSlug == loginUserslug) {
+          answerHtml +=  prepareAnswerHtml(opinionId);
+        }
+        answerHtml += '</div>';
+        $(this).replaceWith(div + answerHtml + '</div>');
+        isAddedAuthorOpinion = true;
+      }
+    });
+  }
+  if (isAddedAuthorOpinion == false) {
+    if (isCurator == true || authorSlug == loginUserslug) {
+      div += prepareAnswerHtml(opinionId);
+    }
+    div += '</div>';
+    $("<hr>" + div).prependTo($('#opinion').children('.opinionbox'));
+  }
+  initializePopover();
 }
