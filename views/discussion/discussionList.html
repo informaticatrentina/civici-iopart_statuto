@@ -42,7 +42,7 @@
         <td><a href="{{constant('BASE_URL')}}admin/discussion/statistics/{{ info.discussionId }}">{{ t('discussion','Statistics')}}</a></td>
         <td><a href="{{constant('BASE_URL')}}admin/discussion/edit/{{ info.discussionSlug }}">{{ t('discussion','Edit')}}</a></td>
         <td><a href="{{constant('BASE_URL')}}discussion/proposal/list/{{ info.discussionSlug }}">{{ t('discussion','View Proposals')}}</a></td>
-        <td><a class="print_proposal" href="{{constant('BASE_URL')}}admin/discussion/allproposal/{{ info.discussionSlug }}">{{ t('discussion','Print Discussion')}}</a></td>
+        <td><a href="{{constant('BASE_URL')}}admin/discussion/allproposal/{{ info.discussionSlug }}">{{ t('discussion','Print Discussion')}}</a></td>
       </tr>
       {% endfor %}
     </table>
@@ -52,4 +52,3 @@
   var baseUrl = "{{constant('BASE_URL')}}";
 </script>
 <script src="{{constant('THEME_URL')}}js/discussionList.js"></script>
-<script src="{{constant('THEME_URL')}}js/jquery.printPage.js"></script>

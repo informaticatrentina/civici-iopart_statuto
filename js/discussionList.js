@@ -1,15 +1,3 @@
-  $(".print_proposal").click(function(){
-    return false;
-  });
-  $(document).ready(function() {
-    if ($('.print_proposal').length > 0) {
-      $(".print_proposal").printPage();
-    }
-  });
-
-
-
-
 var DiscussionSortingOrder = [];
 $(document).ready(function() {
   getDiscussionSortingOrder();
