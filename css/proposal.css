@@ -173,7 +173,7 @@ body .modal .modal-header h3
 
 body .modal .modal-body
 {
-	overflow-y: hidden;
+	overflow-y: visible;
 	border-radius: 0 0 5px 5px;
 }
 
@@ -923,4 +923,16 @@ body .color-purple .modal .modal-header { background-color: #965a73; }
   .navbar {
   border-top: 0px none!important;
   }
+}
+.discussion-tag-display {
+  background-color: #FFFFFF;
+  border: 1px solid #E8E8E8;
+  border-radius: 25px;
+  font-family: "'Titillium Web',sans-serif";
+  padding: 5px 15px;
+}
+.discussion-topic {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: center;
 }

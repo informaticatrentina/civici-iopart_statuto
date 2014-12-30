@@ -76,6 +76,13 @@
       {% set allProposalClass = 'row' %}
     {% endif %}
   {% endif %}
+  {% if topics is not empty %}
+    <div class="discussion-topic">
+      {% for topic in topics %}
+        <span class="discussion-tag-display"><a href="{{constant('BASE_URL')}}discussion/proposals/{{slug}}/{{topic}}">{{topic}}</a></span>
+      {% endfor %}
+    </div>
+  {% endif %}
   <div class="allproposals {{allProposalClass}} {{ccolor}}">
     {% set count = 0 %}
     {% for proposal in proposals.data %}
