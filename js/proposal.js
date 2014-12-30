@@ -379,7 +379,6 @@ $(document).ready(function() {
           $(button).parent('fieldset').parent('.opinionform').parent('div').parent('.row').siblings('.opinionbox').children('.row').each(function() {
             if ($.trim($(this).find("strong > a").html()) == author) {               
               setOpinionComment();
-              setOpinionCountAndHeatMap(resp.msg);
             }
           });
           if (typeof(button.parents().children('.active').attr('class')) == 'undefined') {
@@ -743,6 +742,7 @@ $(document).ready(function() {
   });
   
   $(document.body).on('click', '.popover-test', function(e) {
+    initializePopover();
     e.preventDefault();
   });
   
