@@ -194,7 +194,8 @@ $(document).ready(function() {
       });
     });
   }
-  $('.opinionmap').mouseenter(function() {
+  $('.opinionmap').on('mouseenter click', function(event) {
+    event.preventDefault();
     $(this).popover({title: Yii.t('js', 'Current Opinion'), trigger: 'hover', html: 'true', content: $(this).siblings('.pop').html(), placement: 'top'}).popover('show');
   });
   if ($('.slidess').length > 0) {
