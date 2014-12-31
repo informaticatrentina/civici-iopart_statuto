@@ -111,6 +111,26 @@
             <summary>
               {{ proposal.content.summary }}
             </summary>
+            <hr>
+            <div id="proposal-heatmap-block">
+              <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="200px" height="180px" viewBox="-18.25 -18.75 200 180" enable-background="new -18.25 -18.75 200 180" xml:space="preserve">
+                <text  transform="matrix(1 0 0 1 63 -5.25)" font-family="'HelveticaNeue'" font-size="11">{{ t('discussion', 'Understand') }}</text>
+                <text class="triangle-text" transform="matrix(1 0 0 1 51 156.75)" font-family="'HelveticaNeue'" font-size="11">{{ t('discussion', 'Don’t Understand') }}</text>
+                <text class="triangle-text" transform="matrix(1 0 0 1 -13.4998 77)" font-family="'HelveticaNeue'" font-size="11">{{t('discussion', 'Disagree')}}</text>
+                <text class="triangle-text" transform="matrix(1 0 0 1 126 77)" font-family="'HelveticaNeue'" font-size="11">{{ t('discussion', 'Agree') }}</text>
+                <g>
+                  {% if proposal.heatMap < 9 %}
+                    {% for key,understand in understanding %}
+                      <polygon class="sl" index="{{ key }}" understanding="{{ understand.a }}" comprehension="{{ understand.c }}" fill="#F4f2f3" points="{{ understand.points }}" msg="{{ understand.msg }}"></polygon>
+                    {% endfor %}
+                  {% else %}
+                    {% for key,understand in understanding %}
+                      <polygon class="sl" index="{{ key }}" understanding="{{ understand.a }}" comprehension="{{ understand.c }}" fill=" {{ heatMap[proposal.heatmap[key]] }}" points="{{ understand.points }}" msg="{{ understand.msg }}"></polygon>
+                    {% endfor %}
+                  {% endif %}
+                </g>
+              </svg>
+            </div>
           </a>
           <input class="summary" value="{{ proposal.content.description }}" type="hidden"/>
           <input class="propId" value="{{ proposal.id }}" type="hidden"/>

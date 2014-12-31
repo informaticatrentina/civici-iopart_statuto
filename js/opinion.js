@@ -15,7 +15,7 @@ function updateOpinionAjax(area) {
   var currentId = arrayItems[1];
   if(currentStatus == 'inactive') {
     if($('span[author-id=active-' + currentId + ']').length) {
-      alert('Another opinion by same author already active.');
+      alert(t('discussion','Another opinion by same author already active.'));
       $('span[author-id=active-' + currentId + ']').parents('tr').css('backgroundColor', '#FFFF66');
       return false;
     }
