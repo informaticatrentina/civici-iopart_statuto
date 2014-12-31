@@ -40,12 +40,12 @@
             <td>{{ opinion.description }}</td>
             {% if opinion.status == 'active' %}
               <td>
-                <span style="cursor: pointer" opinion-id='{{opinion.id}}' discussion-id="{{opinion.discussion_id}}" tag-name="{{opinion.tag_name}}" class="opinionStatus">{{t('discussion', 'Hide')}}</span>
+                <span style="cursor: pointer" author-id='{{opinion.status}}-{{opinion.author_id}}' opinion-id='{{opinion.id}}' discussion-id="{{opinion.discussion_id}}" tag-name="{{opinion.tag_name}}" class="opinionStatus">{{t('discussion', 'Hide')}}</span>
                 <span style="display:none;" class="loading-image"><img src="{{constant('BASE_URL')}}images/loader.gif" alt="loading..." /></span> 
               </td>
             {% else %}
               <td>
-                <span style="cursor: pointer" opinion-id='{{opinion.id}}' discussion-id="{{opinion.discussion_id}}" tag-name="{{opinion.tag_name}}" class="opinionStatus">{{t('discussion', 'Show')}}</span>
+                <span style="cursor: pointer" author-id='{{opinion.status}}-{{opinion.author_id}}' opinion-id='{{opinion.id}}' discussion-id="{{opinion.discussion_id}}" tag-name="{{opinion.tag_name}}" class="opinionStatus">{{t('discussion', 'Show')}}</span>
                 <span style="display:none;" class="loading-image"><img src="{{constant('BASE_URL')}}images/loader.gif" alt="loading..." /></span> 
               </td>
             {% endif %}
