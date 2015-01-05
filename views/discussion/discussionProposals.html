@@ -182,10 +182,7 @@
                               <text class="triangle-text" transform="matrix(1 0 0 1 -13.4998 77)" fill="#999" font-family="'HelveticaNeue'" font-size="11">{{t('discussion', 'Disagree')}}</text>
                               <text class="triangle-text" transform="matrix(1 0 0 1 126 77)" fill="#999" font-family="'HelveticaNeue'" font-size="11">{{ t('discussion', 'Agree') }}</text>
                             </svg>
-                            <div class="tmodal-content">
-                              <span class="message"><p></p></span>
-                              <button class="tmodal-close btn btn-primary btn-sm">Cambia la tua posizione</button>
-                            </div>
+                            <div class="triangle-position-text"></div>
                           </div>
                           <div class="col-lg-7 col-md-7 col-sm-7 col-xs-12">
                             <h4>{{t('discussion', 'Your Opinion')}}</h4>
@@ -193,7 +190,7 @@
                             <div id="opinion-msg" class="alert-success"></div>
                             <p class="opinion-mode">{{t('discussion', 'First give us your position on the proposal.')}}</p>
                             <form role="form"  class="opinionform" action="" method="post"  >                          
-                              <fieldset disabled="" class="opinion-textbox">
+                              <fieldset class="opinion-textbox">
                                 <div class="form-group">
                                   <textarea id="opiniontext" placeholder="aggiungi la tua opinione..." rows="5" name="opiniontext" class="form-control opiniontext" maxlength="{{max_char_opinion}}">
                                   </textarea>

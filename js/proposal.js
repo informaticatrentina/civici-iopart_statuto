@@ -19,6 +19,9 @@ $(document).ready(function() {
     $('.opiniontext').val('');
     $('.tmodal-launcher').show();
     $('.triangle-text').show();
+    $('.sl').css({'stroke': '', 'stroke-width': 0});
+    $('.triangle-position-text').html('');
+    $('#opinion-box-text').val('');
     $('.tmodal-content').hide();
     $('.link-page-login').removeClass('pid*');
     $('.opinion-page-login').removeClass('pid*');
@@ -53,7 +56,6 @@ $(document).ready(function() {
     $('#proposal').html('');
     var propDiv = '<article><div class="clearfix"></div><p><summary>' + summary + '</summary></p><div class="clearfix"></div><p><description>' + description + '</description></p></article>';
     $('#proposal').append(propDiv);
-    $('#opinion').children('.row').children('div').find('form').find('.opinion-textbox').prop('disabled', true);
     $.ajax({
       type: 'POST',
       data: {pid: id, action: 'getData'},
@@ -78,6 +80,12 @@ $(document).ready(function() {
           for (key in resp.msg.hasUserSubmitted.tags) {
             if (resp.msg.hasUserSubmitted.tags[key].slug == 'triangle') {
               $('.index').val(resp.msg.hasUserSubmitted.tags[key].weight);
+              $('.tmodal-launcher').each(function() {
+                if ($(this).children('polygon').attr('index') == resp.msg.hasUserSubmitted.tags[key].weight) {
+                  $(this).children('polygon').css({'stroke': 'black', 'stroke-width': 1});
+                  $('.triangle-position-text').html($(this).children('polygon').attr('msg'));
+                }
+              });
               var indexs = resp.msg.hasUserSubmitted.tags[key].weight;
               $('.prevmsg').val(triangles[indexs].msg);
               $('.previndex').val(resp.msg.hasUserSubmitted.tags[key].weight);
@@ -89,17 +97,11 @@ $(document).ready(function() {
               $('.comprehension').val(resp.msg.hasUserSubmitted.tags[key].weight);
             }
           }
-          var msg = '<p>' + triangles[indexs].msg + '</p>';
           if ((ocharLimit - $('.opiniontext').val().length) < 0) {
             $('.opiniontext').siblings('.words').text(0);
           } else {
             $('.opiniontext').siblings('.words').text(ocharLimit - $('.opiniontext').val().length);
           }
-          $('.tmodal-launcher').hide();
-          $('.triangle-text').hide();
-          $('.tmodal-content').children('.message').html(msg);
-          $('.tmodal-content').show();
-          $('.tmodal-background').show();
         } else {
           $('.post').html(Yii.t('js','Submit Opinion'));
           $('.opinion-mode').text(Yii.t('js','First give us your position on the proposal.'));
@@ -117,32 +119,36 @@ $(document).ready(function() {
         } else {
           flagUrl = '';
           for (var key in resp.msg.opinion) {
-            if (resp.msg.opinion[key].nextLang == '') {
-              var imgFlag = '';
-            } else {
-              var imgFlag = '<img class="imgflag" src="' + flagUrl + resp.msg.opinion[key].nextLang + '.png "/>';
-            }            
-            opinionBox += '<hr><div class="row ' + resp.msg.opinion[key].class + ' by-' + resp.msg.opinion[key].author.slug + '">\n\
-                            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">\n\
-                              <img class="img-responsive img-circle" src="' + imageUrl + resp.msg.opinion[key].author.slug + '/' + imageSize + '"/>\n\
-                            </div>\n\
-                            <div class="col-lg-10 col-md-10 col-sm-10 col-xs-9">\n\
-                              <p><strong><a href=' + profileUrl + resp.msg.opinion[key].author.slug + '>' + resp.msg.opinion[key].author.name + '</a></strong> : <description>' + resp.msg.opinion[key].content.description + '</description>\n\
-                            ';
-            var opinionId = resp.msg.opinion[key].id;
-            var opinionInfo = resp.msg.answer_on_opinion[opinionId];
-            if (typeof opinionInfo != 'undefined') {
-             for(var i = 0; i < opinionInfo.length; i++) {
-                opinionBox += '<hr><p class="small">' + opinionInfo[i]['content']['description'] +
-                              ' - <strong>' + opinionInfo[i]['author']['name'] + '</strong></p>';
+            if (resp.msg.opinion[key].content.description != '') {
+              if (resp.msg.opinion[key].nextLang == '') {
+                var imgFlag = '';
+              } else {
+                var imgFlag = '<img class="imgflag" src="' + flagUrl + resp.msg.opinion[key].nextLang + '.png "/>';
               }
+              opinionBox += '<hr><div class="row ' + resp.msg.opinion[key].class + ' by-' + resp.msg.opinion[key].author.slug + '">\n\
+                              <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">\n\
+                                <img class="img-responsive img-circle" src="' + imageUrl + resp.msg.opinion[key].author.slug + '/' + imageSize + '"/>\n\
+                              </div>\n\
+                              <div class="col-lg-10 col-md-10 col-sm-10 col-xs-9">\n\
+                                <p><strong><a href=' + profileUrl + resp.msg.opinion[key].author.slug + '>' + resp.msg.opinion[key].author.name + '</a></strong>';
+              if (resp.msg.opinion[key].content.description != '') {
+                opinionBox += ': <description>' + resp.msg.opinion[key].content.description + '</description>';
+              }
+              var opinionId = resp.msg.opinion[key].id;
+              var opinionInfo = resp.msg.answer_on_opinion[opinionId];
+              if (typeof opinionInfo != 'undefined') {
+               for(var i = 0; i < opinionInfo.length; i++) {
+                  opinionBox += '<hr><p class="small">' + opinionInfo[i]['content']['description'] +
+                                ' - <strong>' + opinionInfo[i]['author']['name'] + '</strong></p>';
+                }
+              }
+              if (isCurator == true || authorSlug == loginUserslug) {
+                opinionBox += prepareAnswerHtml(opinionId);
+              }
+              opinionBox += '</div></div>';
+              $('#opinion').children('.opinionbox').append(opinionBox);
+              opinionBox = '';
             }
-            if (isCurator == true || authorSlug == loginUserslug) {
-              opinionBox += prepareAnswerHtml(opinionId);
-            }
-            opinionBox += '</div></div>';
-            $('#opinion').children('.opinionbox').append(opinionBox);
-            opinionBox = '';
           }
           initializePopover();
         }
@@ -231,9 +237,13 @@ $(document).ready(function() {
     $('.index').val(index);
     $('.understanding').val(understanding);
     $('.comprehension').val(comprehension);
-    $(this).parent().siblings('.tmodal-content').show();
-    $(this).parent().siblings('.tmodal-content').children('.message').html(msg);
+    $('#opinion-msg').html('');
+    $('.opinion-mode').text(Yii.t('js','Thank you for giving us your position on the proposal.'));
+    $('.triangle-position-text').html('<hr/>' + msg);
+    $('.sl').css({'stroke':'', 'stroke-width':0});
+    $(this).find('.sl').css({'stroke':'black', 'stroke-width':1});
     $(this).parents('.triangleBox').parents('.row').siblings('.prevmsg').val(msg);
+    saveTrianglePostion(index, understanding, comprehension, msg);
     return false;
   });
   $(".tmodal-background, .tmodal-close").click(function(e) {
@@ -305,29 +315,14 @@ $(document).ready(function() {
   $('.post').click(function(e) {
     var button = $(this);
     e.preventDefault();
-    var opinionClass = '';
     var data = $(this).parents('.opinionform').serialize();
     var textarea = $('#opiniontext').val();
     var index = $('.index').val();
-    if (index === '') {
-      $('#opinion-msg').html(Yii.t('js', 'Please indicate your position on this proposal by clicking on the triangle')).addClass('alert-danger');
-      return false;
-    }
-    if (textarea === '') {
+    if ($.trim(textarea) === '') {
       $('#opinion-msg').html(Yii.t('js', 'Opinion field can not be blank')).addClass('alert-danger');
       return false;
     }
     $('#opinion-msg').html(' ');
-    var author = $('#author').val();
-    var authorid = $('#authorid').val();
-    var image = $('#authorImage').val();
-    if ($.inArray(parseInt(index), neutral) !== -1) {
-      opinionClass = ' class="row neutral"';
-    } else if ($.inArray(parseInt(index), agree) !== -1) {
-      opinionClass = ' class="row agree"';
-    } else {
-      opinionClass = ' class="row disagree"';
-    }
     $('.post').hide();
     $('#opinion-save-image').show();    
     $.ajax({
@@ -351,86 +346,14 @@ $(document).ready(function() {
         }
         textarea = resp.opinion_text;
         $('#opinion-box-text').val(textarea);
-        var div  = '<div ' + opinionClass +'>\n\
-                     <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">\n\
-                       <img class="img-responsive img-circle" src="' + image +'"/>\n\
-                     </div>\n\
-                     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-9">\n\
-                       <p><strong><a href=' + authorid + '>' + author + '</a></strong> : <description>' + textarea + '</description>';
-        div += prepareAnswerHtml(resp.opinion_id) + '</div></div>';
-        
-        if (resp.msg) {
-          pop = '<svg xml:space="preserve" enable-background="new -18.25 -18.75 200 180" viewBox="-18.25 -18.75 200 180" height="180px" width="200px" y="0px" x="0px" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1">\n\
-              <text class="triangle-text" transform="matrix(1 0 0 1 63 -5.25)"  font-family="HelveticaNeue" font-size="11">Chiara</text>\n\
-              <text class="triangle-text" transform="matrix(1 0 0 1 51 156.75)"  font-family="HelveticaNeue" font-size="11">Non Chiara</text>\n\
-              <text class="triangle-text" transform="matrix(1 0 0 1 -13.4998 77)"  font-family="HelveticaNeue" font-size="11"><tspan x="10" y="10">Non</tspan><tspan x="10" y="20">concordo</tspan></text>\n\
-              <text class="triangle-text" transform="matrix(1 0 0 1 126 77)"  font-family="HelveticaNeue" font-size = "11" >Concordo</text>\n\
-              <g>';
-          for (key in triangles) {
-            pop += '<polygon class = "sl" index = "' + key + '" understanding = "' + triangles[key].a + '" comprehension = "' + triangles[key].c + '" fill = "' + colors[resp.msg[key]] + '" points = "' + triangles[key].points + '" msg = "' + triangles[key].msg + '" />';
-          }
-          pop += '</g></svg>';
-        }
-        if (typeof(resp) !== 'string') {
-          var id = resp.msg;
-        }
-        $('.active-parent').children('.proposal').children('footer').children('.opinions').children('count').text(resp.msg.OpinionCount);
         var text = $(button).parent('fieldset').siblings('.upd').val();
-        if (text == 1) {
-          $(button).parent('fieldset').parent('.opinionform').parent('div').parent('.row').siblings('.opinionbox').children('.row').each(function() {
-            if ($.trim($(this).find("strong > a").html()) == author) {               
-              setOpinionComment();
-            }
-          });
-          if (typeof(button.parents().children('.active').attr('class')) == 'undefined') {
-            var popover = button.parents().siblings().children('.active').children('footer').children('.documeents').children('.opinionmap').data('popover');
-            if (typeof(popover) != 'undefined') {
-              popover.options.content = pop;
-            }
-          } else {
-            var popover = button.parents().children('.active').children('footer').children('.documeents').children('.opinionmap').data('popover');
-            if (typeof(popover) != 'undefined') {
-              popover.options.content = pop;
-            }
-          }
-        } else {
-          $(button).parent('fieldset').siblings('.id').val(id);
+        if (text == 0) {
+          $(button).parent('fieldset').siblings('.id').val(resp.opinion_id);
           $(button).parent('fieldset').siblings('.upd').val(1);
           $(button).parent('fieldset').siblings('.previndex').val(index);
-          var elements = $(button).parent('fieldset').parent('.opinionform').parent('div').parent('.row').siblings('.opinionbox').children('.row').length;
-          if (elements == 1 && typeof($(button).parent('fieldset').parent('.opinionform').parent('div').parent('.row').siblings('.opinionbox').children('.row').find("strong").html()) == "undefined") {
-            $(button).parent('fieldset').parent('.opinionform').parent('div').parent('.row').siblings('.opinionbox').html("<hr>" + div);
-          } else {
-            if ($.inArray(parseInt(index), neutral) !== -1) {
-              opinionClass = 'class="row neutral"';
-            } else if ($.inArray(parseInt(index), agree) !== -1) {
-              opinionClass = 'class="row agree"';
-            } else {
-              opinionClass = 'class="row disagree"';
-            } 
-            var firstOpinionDiv = '<hr><div ' + opinionClass +'>\n\
-                                    <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">\n\
-                                      <img class="img-responsive img-circle" src="' + image +'"/>\n\
-                                    </div>\n\
-                                    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-9">\n\
-                                      <p><strong><a href=' + authorid + '>' + author + '</a></strong> : <description>' + textarea + '</description>';
-            firstOpinionDiv += prepareAnswerHtml(resp.opinion_id) + '</div></div>';
-            $(firstOpinionDiv).prependTo($(button).parent('fieldset').parent('.opinionform').parent('div').parent('.row').siblings('.opinionbox'));
-            if (typeof(button.parents().children('.active').attr('class')) == 'undefined') {
-              var popover = button.parents().siblings().children('.active').children('footer').children('.documeents').children('.opinionmap').data('popover');
-              if (typeof(popover) != 'undefined') {
-                popover.options.content = pop;
-              }
-              button.parents().siblings().children('.active').children('footer').children('.opinions').children('count').text(resp.msg.OpinionCount);
-            } else {
-              var popover = button.parents().children('.active').children('footer').children('.documeents').children('.opinionmap').data('popover');
-              if (typeof(popover) != 'undefined') {
-                popover.options.content = pop;
-              }
-              button.parents().children('.active').children('footer').children('.opinions').children('count').text(resp.msg.OpinionCount);
-            }
-          }
         }
+        setOpinionComment();
+        setOpinionCountAndHeatMap(resp.msg);
       },
       error: function() {
         $('#opinion-save-image').hide();
@@ -573,7 +496,6 @@ $(document).ready(function() {
         if (opinionCount < 0) {
           $('#opinion-msg').html(Yii.t('js', 'Opinion text should be atmost 500 characters'));
           $('#opinion-msg').addClass('alert-danger');
-          $('#opinion-button').attr('disabled','true');
         } else {
           $('#opinion-msg').html('');
           $('#opinion-msg').removeClass('alert-danger');
@@ -659,10 +581,6 @@ $(document).ready(function() {
   });
   $('.sl').click(function() {
     $('#opinion-msg').html('');
-    $('.tmodal-launcher').hide();
-    $('.triangle-text').hide();
-    $('.tmodal-content').show();
-    $('#opinion').children('.row').children('div').find('form').find('.opinion-textbox').removeAttr('disabled');
     $('.opinion-mode').text(Yii.t('js','Thank you for giving us your position on the proposal.'));
   });
   $('.closePopOver').click(function() {
@@ -975,4 +893,83 @@ function setOpinionComment() {
     $("<hr>" + div).prependTo($('#opinion').children('.opinionbox'));
   }
   initializePopover();
+}
+
+function saveTrianglePostion(index, understanding, comprehension, msg) {
+  var url = document.URL;
+  var urlPart = url.split('?');
+  if (urlPart[0] === '') {
+    return false;
+  }
+  urlPart[0] = urlPart[0].replace('#', '');
+  var proposalId = '';
+  var appliedClass = $('#modalBox').siblings('.proposal').attr('class').split(' ');
+  for (i = 1; i < appliedClass.length; i++) {
+    if (appliedClass[i].substr(0, 4) === 'pid-') {
+      proposalId = appliedClass[i].substr(4);
+      break;
+    }
+  }
+  var opinionId = $('.id').val();
+  var update = $('.upd').val();
+  var prevIndex = $('.previndex').val();
+  $('#opinion-button').hide();
+  var loadingImageHtml = $('.loading-image').html();
+  $('.triangle-position-text').html(loadingImageHtml);
+  var opinionDescription = $('#opinion-box-text').val();
+  $.ajax({
+    type: 'POST',
+    dataType:'json',
+    url: urlPart[0]  + '/saveposition',
+    data: {
+      index: index,
+      understanding: understanding,
+      comprehension: comprehension,
+      id: proposalId,
+      opinionid: opinionId,
+      update: update,
+      previndex: prevIndex,
+      opiniontext: opinionDescription
+    },
+    success: function(resp) {
+      $('#opinion-button').show();
+      $('.triangle-position-text').html(msg);
+      if (resp.success) {
+        $('.id').val(resp.data.opinion_id);
+        $('.upd').val(1);
+        $('.previndex').val(index);
+      } else {
+        alert('An error occured, please try again');
+      }
+      if (resp.data != 'undefined') {
+        setOpinionCountAndHeatMap(resp.data.opinion);
+      }
+    },
+    error: function() {
+      $('.triangle-position-text').html('');
+      $('#opinion-button').show();
+      alert('An error occured, please try again');
+    }
+  });
+  if (update == 1 && opinionDescription != '') {
+    setOpinionComment();
+  }
+}
+
+function setOpinionCountAndHeatMap(opinion) {
+  var heatMap = '';
+  if (opinion) {
+    heatMap = '<svg xml:space="preserve" enable-background="new -18.25 -18.75 200 180" viewBox="-18.25 -18.75 200 180" height="180px" width="200px" y="0px" x="0px" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" version="1.1">\n\
+              <text class="triangle-text" transform="matrix(1 0 0 1 63 -5.25)"  font-family="HelveticaNeue" font-size="11">Chiara</text>\n\
+              <text class="triangle-text" transform="matrix(1 0 0 1 51 156.75)"  font-family="HelveticaNeue" font-size="11">Non Chiara</text>\n\
+              <text class="triangle-text" transform="matrix(1 0 0 1 -13.4998 77)"  font-family="HelveticaNeue" font-size="11"><tspan x="10" y="10">Non</tspan><tspan x="10" y="20">concordo</tspan></text>\n\
+              <text class="triangle-text" transform="matrix(1 0 0 1 126 77)"  font-family="HelveticaNeue" font-size = "11" >Concordo</text>\n\
+              <g>';
+    for (key in triangles) {
+      heatMap += '<polygon class = "sl" index = "' + key + '" understanding = "' + triangles[key].a + '" comprehension = "' + triangles[key].c + '" fill = "' + colors[opinion[key]] + '" points = "' + triangles[key].points + '" msg = "' + triangles[key].msg + '" />';
+    }
+    heatMap += '</g></svg>';
+  }
+  $('.active-parent').children('.proposal').children('footer').children('.opinions').children('count').text(opinion.OpinionCount);
+  $('.active-parent').children('.proposal').children('footer').children('.documeents').children('.pop').html(heatMap);
 }
