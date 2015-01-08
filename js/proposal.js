@@ -23,9 +23,15 @@ $(document).ready(function() {
     $('.triangle-position-text').html('');
     $('#opinion-box-text').val('');
     $('.tmodal-content').hide();
-    $('.link-page-login').removeClass('pid*');
-    $('.opinion-page-login').removeClass('pid*');
-    $('.proposal').removeClass('pid*');
+    var appliedClass = $('.proposal').attr('class').split(' ');
+    for (i = 1; i < appliedClass.length; i++) {
+      if (appliedClass[i].substr(0, 4) === 'pid-') {
+        $('.proposal').removeClass(appliedClass[i]);
+        $('.link-page-login').removeClass(appliedClass[i]);
+        $('.opinion-page-login').removeClass(appliedClass[i]);
+        break;
+      }
+    }
     $('#modalBox').children('.modal-dialog').children('.modal-content').children('.modal-body').children('.content').html('');
     $(this).parents('.singleProposal').addClass('active-parent');
     $(this).parents('.singleProposal').siblings().removeClass('active-parent');
