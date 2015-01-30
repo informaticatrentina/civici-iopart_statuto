@@ -82,7 +82,8 @@ $(document).ready(function() {
           textarea = resp.msg.hasUserSubmitted.content.description;
           textarea = decodeHtml(textarea); 
           $('#opinion').children('.row').children('div').find('form').find('.opinion-textbox').removeAttr('disabled');
-          $('#opiniontext').val(textarea);          
+          $('#opiniontext').val(textarea);
+          $('#opinion-box-text').val(textarea);
           for (key in resp.msg.hasUserSubmitted.tags) {
             if (resp.msg.hasUserSubmitted.tags[key].slug == 'triangle') {
               $('.index').val(resp.msg.hasUserSubmitted.tags[key].weight);
@@ -480,52 +481,8 @@ $(document).ready(function() {
       }
     });
   });
-  $('#title, #proposalIntroduction, .opiniontext').keyup(function() {        
-    switch ($(this).attr('id')) {
-      case 'title':
-        titleCount = tcharLimit - $(this).val().length;
-        $(this).siblings('.words').text(titleCount);
-        if (titleCount < 0) {
-          $('#proposal-error').html(Yii.t('js', 'Title should be atmost 50 characters'));
-        }
-        break;
-      case 'proposalIntroduction' :
-        proposalCount = icharLimit - $(this).val().length;
-        $(this).siblings('.words').text(proposalCount);
-        if (proposalCount < 0) {
-          $('#proposal-error').html(Yii.t('js', 'Proposal Introduction should be atmost 500 characters'));
-        }
-        break;
-      case 'opiniontext' :
-        opinionCount = ocharLimit - $(this).val().length;
-        $(this).siblings('.words').text(opinionCount);
-        if (opinionCount < 0) {
-          $('#opinion-msg').html(Yii.t('js', 'Opinion text should be atmost 500 characters'));
-          $('#opinion-msg').addClass('alert-danger');
-        } else {
-          $('#opinion-msg').html('');
-          $('#opinion-msg').removeClass('alert-danger');
-          $('#opinion-button').removeAttr('disabled');
-        }
-        break;
-    }
-    if (titleCount <= tcharLimit && titleCount >= 0 && proposalCount <= icharLimit && proposalCount >= 0) {
-      $('#proposal-error').hide();
-      $('#proposal-error').html('');
-      $('#saveProposal').removeAttr('disabled');
-    } else if (titleCount >= 0 && titleCount <= tcharLimit) {
-      if (proposalCount < 0) {
-        $('#proposal-error').html(Yii.t('js', 'Proposal Introduction should be atmost 500 characters'));
-        $('#proposal-error').show();
-        $('#saveProposal').attr('disabled','true'); 
-      }
-    } else if (proposalCount >= 0 && proposalCount <= icharLimit) {
-      if (titleCount < 0) {
-        $('#proposal-error').html(Yii.t('js', 'Title should be atmost 50 characters'));
-        $('#proposal-error').show();
-        $('#saveProposal').attr('disabled','true');
-      }
-    }
+  $('#title, #proposalIntroduction, .opiniontext').keyup(function() {
+    actionOnKeyUpEvent($(this));
   });
   $('#title, #proposalIntroduction, .opiniontext').keydown(function() {    
     switch ($(this).attr('id')) {
@@ -624,42 +581,7 @@ $(document).ready(function() {
     return false;
   });  
   $("#title, #proposalIntroduction , .opiniontext").bind('paste', function(e) {
-    var self = $(this);
-    self.attr('maxlength', '');
-      setTimeout(function() {
-        var chars = parseInt(self.siblings('.words').text());
-        var pastedText = self.val();
-        var pastedLength = pastedText.length;        
-        switch (self.attr('id')) {
-          case 'title' :
-            titleCount = tcharLimit - pastedLength;            
-            if (titleCount < 0) {
-              $('#proposal-error').html(Yii.t('js', 'Title should be atmost 50 characters.'));
-              $('#proposal-error').show();
-              $('#saveProposal').attr('disabled','true');
-            }
-            self.siblings('.words').text(titleCount);
-            break;
-          case 'proposalIntroduction' :
-            proposalCount = icharLimit - pastedLength;
-            if (proposalCount < 0) {
-              $('#proposal-error').html(Yii.t('js', 'Proposal Introduction should be atmost 500 characters.'));
-              $('#proposal-error').show();
-              $('#saveProposal').attr('disabled','true');
-            }
-            self.siblings('.words').text(proposalCount);
-            break;
-          case 'opiniontext' :
-            var chars = ocharLimit - pastedLength;
-            self.siblings('.words').text(chars);
-            break;
-        }
-         if (titleCount <= tcharLimit && titleCount >= 0 && proposalCount <= icharLimit && proposalCount >= 0) {
-          $('#proposal-error').hide();
-          $('#proposal-error').html('');
-          $('#saveProposal').removeAttr('disabled');
-        }
-      }, 100);
+    actionOnPasteEvent($(this));
   });
 
   $('.add-new-proposal-btn').click(function() {
@@ -978,4 +900,96 @@ function setOpinionCountAndHeatMap(opinion) {
   }
   $('.active-parent').children('.proposal').children('footer').children('.opinions').children('count').text(opinion.OpinionCount);
   $('.active-parent').children('.proposal').children('footer').children('.documeents').children('.pop').html(heatMap);
+}
+
+
+function actionOnKeyUpEvent(self) {
+  titleCount = '';
+  proposalCount = '';
+  switch (self.attr('id')) {
+    case 'title':
+      titleCount = tcharLimit - self.val().length;
+      self.siblings('.words').text(titleCount);
+      if (titleCount < 0) {
+        $('#proposal-error').html(Yii.t('js', 'Title should be atmost 50 characters'));
+      }
+      break;
+    case 'proposalIntroduction' :
+      proposalCount = icharLimit - self.val().length;
+      self.siblings('.words').text(proposalCount);
+      if (proposalCount < 0) {
+        $('#proposal-error').html(Yii.t('js', 'Proposal Introduction should be atmost 500 characters'));
+      }
+      break;
+    case 'opiniontext' :
+      opinionCount = ocharLimit - self.val().length;
+      self.siblings('.words').text(opinionCount);
+      if (opinionCount < 0) {
+        $('#opinion-msg').html(Yii.t('js', 'Opinion text should be atmost 500 characters'));
+        $('#opinion-msg').addClass('alert-danger');
+        $('#opinion-button').attr('disabled','true');
+      } else {
+        $('#opinion-msg').html('');
+        $('#opinion-msg').removeClass('alert-danger');
+        $('#opinion-button').removeAttr('disabled');
+      }
+      break;
+  }
+  if (titleCount <= tcharLimit && titleCount >= 0 && proposalCount <= icharLimit && proposalCount >= 0) {
+    $('#proposal-error').hide();
+    $('#proposal-error').html('');
+    $('#saveProposal').removeAttr('disabled');
+  } else if (titleCount >= 0 && titleCount <= tcharLimit) {
+    if (proposalCount < 0) {
+      $('#proposal-error').html(Yii.t('js', 'Proposal Introduction should be atmost 500 characters'));
+      $('#proposal-error').show();
+      $('#saveProposal').attr('disabled','true');
+    }
+  } else if (proposalCount >= 0 && proposalCount <= icharLimit) {
+    if (titleCount < 0) {
+      $('#proposal-error').html(Yii.t('js', 'Title should be atmost 50 characters'));
+      $('#proposal-error').show();
+      $('#saveProposal').attr('disabled','true');
+    }
+  }
+}
+
+function actionOnPasteEvent(self) {
+  titleCount = '';
+  proposalCount = '';
+  self.attr('maxlength', '');
+  setTimeout(function() {
+    var chars = parseInt(self.siblings('.words').text());
+    var pastedText = self.val();
+    var pastedLength = pastedText.length;
+    switch (self.attr('id')) {
+      case 'title' :
+        titleCount = tcharLimit - pastedLength;
+        if (titleCount < 0) {
+          $('#proposal-error').html(Yii.t('js', 'Title should be atmost 50 characters.'));
+          $('#proposal-error').show();
+          $('#saveProposal').attr('disabled','true');
+        }
+        self.siblings('.words').text(titleCount);
+        break;
+      case 'proposalIntroduction' :
+        proposalCount = icharLimit - pastedLength;
+        if (proposalCount < 0) {
+          $('#proposal-error').html(Yii.t('js', 'Proposal Introduction should be atmost 500 characters.'));
+          $('#proposal-error').show();
+          $('#saveProposal').attr('disabled','true');
+        }
+        self.siblings('.words').text(proposalCount);
+        break;
+      case 'opiniontext' :
+        chars = ocharLimit - pastedLength;
+        self.siblings('.words').text(chars);
+        break;
+    }
+    if (titleCount <= tcharLimit && titleCount >= 0 && proposalCount <= icharLimit && proposalCount >= 0) {
+      $('#proposal-error').hide();
+      $('#proposal-error').html('');
+      $('#saveProposal').removeAttr('disabled');
+    }
+  }, 100);
 }
