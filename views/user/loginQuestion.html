@@ -30,14 +30,14 @@
         <input id="age" class="input-block-level" type="text" maxlength="2" placeholder="{{t('discussion','age') }}" name="age" value="{{ageValue}}">
       </div>
     {% endif %}
-    {% if additional_info.gender is not empty %}
+    {% if additional_info.sex is not empty %}
       <div class="form-group">
-        <label for="gender"> {{additional_info.gender.text}} </label>
-        <select name="gender" id="gender">
+        <label for="gender"> {{additional_info.sex.text}} </label>
+        <select name="sex" id="gender">
           <option value="">{{t('discussion','select gender') }}</option>
-          {% for key,value in additional_info.gender.value %}
+          {% for key,value in additional_info.sex.value %}
             {% set selected = '' %}
-            {% if post_data.gender == key %}
+            {% if post_data.sex == key %}
               {% set selected = 'selected="selected"' %}
             {% endif %}
             <option {{selected}} value="{{key}}">{{value}}</option>
