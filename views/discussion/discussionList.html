@@ -10,6 +10,8 @@
         <a class="link admin-homepage-link" href="{{constant('BASE_URL')}}admin/config/homepage"> {{ t('discussion', 'Configure Home Page')}}</a>
         &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
         <a class="link admin-allDiscussion-link" href="{{constant('BASE_URL')}}admin/all-discussion"> {{ t('discussion', 'View All Discussions')}}</a>
+        &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+        <a class="link admin-allDiscussion-link" href="{{constant('BASE_URL')}}admin/statistics"> {{ t('discussion', 'Report Statistics')}}</a>
       </div>
     </div>
   </div>
@@ -33,6 +35,8 @@
       {% if isAdmin == true %}
         <th>{{ t('discussion','Print Discussion') }}</th>
       {% endif %}
+      {% set totalProposal = 0 %}
+      {% set totalOpinion = 0 %}
       {% for info in discussionInfo %}
       <tr>
         <td>{{ info.discussionTitle }}</td>
@@ -57,9 +61,25 @@
           <td><a href="{{constant('BASE_URL')}}admin/discussion/allproposal/{{ info.discussionSlug }}">{{ t('discussion','Print Discussion')}}</a></td>
         {% endif %}
       </tr>
+      {% set totalProposal = totalProposal + info.proposalCount %}
+      {% set totalOpinion = totalOpinion + info.opinionCount %}
       {% endfor %}
     </table>
     <br/>
+    {{ t('discussion','Number of Proposals') }}
+    : {{totalProposal}}
+    <br/>
+    {{ t('discussion','Number of Visualization + Opinions') }}
+    : {{totalOpinion}}
+    <br/>
+    {{ t('discussion','Number of User Registered') }}
+    : {{authorNames|length}}
+    <br/>
+    {{ t('discussion','List of User Registered who all contributed in proposal, visualization, and opinion') }}
+    <br/>
+    {% for author in authorNames %}
+      {{author}}<br>
+    {% endfor %}
   </div>
 <script>
   var baseUrl = "{{constant('BASE_URL')}}";
