@@ -329,6 +329,10 @@ $(document).ready(function() {
       $('#opinion-msg').html(Yii.t('js', 'Opinion field can not be blank')).addClass('alert-danger');
       return false;
     }
+    if (index == '') {
+      $('#opinion-msg').html(Yii.t('js', 'You can not leave the field blank opinion.')).addClass('alert-danger');
+      return false;
+    }
     $('#opinion-msg').html(' ');
     $('.post').hide();
     $('#opinion-save-image').show();    
