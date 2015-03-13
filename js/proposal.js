@@ -76,7 +76,6 @@ $(document).ready(function() {
         $('.proposal').addClass('pid-' + id); 
         if (typeof(resp.msg.hasUserSubmitted) == 'object') { 
           $('.post').html(Yii.t('js','Update Opinion'));
-          $('.opinion-mode').text('');
           $('.id').val(resp.msg.hasUserSubmitted.id);
           $('.upd').val(1);          
           textarea = resp.msg.hasUserSubmitted.content.description;
@@ -86,6 +85,9 @@ $(document).ready(function() {
           $('#opinion-box-text').val(textarea);
           for (key in resp.msg.hasUserSubmitted.tags) {
             if (resp.msg.hasUserSubmitted.tags[key].slug == 'triangle') {
+              if (resp.msg.hasUserSubmitted.tags[key].weight > 0) {
+                $('#position-msg').text(Yii.t('js','Thank you for giving us your position on the proposal.')).addClass('alert-success');
+              }
               $('.index').val(resp.msg.hasUserSubmitted.tags[key].weight);
               $('.tmodal-launcher').each(function() {
                 if ($(this).children('polygon').attr('index') == resp.msg.hasUserSubmitted.tags[key].weight) {
@@ -111,7 +113,6 @@ $(document).ready(function() {
           }
         } else {
           $('.post').html(Yii.t('js','Submit Opinion'));
-          $('.opinion-mode').text(Yii.t('js','First give us your position on the proposal.'));
           $('.upd').val(0);
           $('.id').val('');
           $('.index').val('');
@@ -245,7 +246,7 @@ $(document).ready(function() {
     $('.understanding').val(understanding);
     $('.comprehension').val(comprehension);
     $('#opinion-msg').html('');
-    $('.opinion-mode').text(Yii.t('js','Thank you for giving us your position on the proposal.'));
+    $('#position-msg').text(Yii.t('js','Thank you for giving us your position on the proposal.')).addClass('alert-success');
     $('.triangle-position-text').html('<hr/>' + msg);
     $('.sl').css({'stroke':'', 'stroke-width':0});
     $(this).find('.sl').css({'stroke':'black', 'stroke-width':1});
@@ -255,7 +256,6 @@ $(document).ready(function() {
   });
   $(".tmodal-background, .tmodal-close").click(function(e) {
     e.preventDefault();
-    $('.opinion-mode').text('');
     $(this).parent('.tmodal-content').hide();
   });
   $(".panel2").click(
@@ -349,7 +349,6 @@ $(document).ready(function() {
         $('.post').show();
         if (resp.status) {
           $('#opinion-msg').html(Yii.t('js', 'Opinion has been saved successfully. You can edit your opinion at any time.')).addClass('alert-success');
-          $('.opinion-mode').html('');
           $('.post').html(Yii.t('js', 'Update Opinion'));
         } else {
           $('#opinion-msg').html(Yii.t('js', 'Please enter proper text in opinion')).addClass('alert-danger');
@@ -548,7 +547,7 @@ $(document).ready(function() {
   });
   $('.sl').click(function() {
     $('#opinion-msg').html('');
-    $('.opinion-mode').text(Yii.t('js','Thank you for giving us your position on the proposal.'));
+    $('#position-msg').text(Yii.t('js','Thank you for giving us your position on the proposal.')).addClass('alert-success');
   });
   $('.closePopOver').click(function() {
     $('.opinion').popover('hide');
