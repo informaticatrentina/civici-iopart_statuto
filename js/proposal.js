@@ -330,7 +330,7 @@ $(document).ready(function() {
       return false;
     }
     if (index == '') {
-      $('#opinion-msg').html(Yii.t('js', 'You can not leave the field blank opinion.')).addClass('alert-danger');
+      $('#opinion-msg').html(Yii.t('js', 'You have to choose a position on the triangle!')).addClass('alert-danger');
       return false;
     }
     $('#opinion-msg').html(' ');
