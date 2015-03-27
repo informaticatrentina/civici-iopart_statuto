@@ -6,15 +6,17 @@ $(document).ready(function() {
       focusOnError();
       return false;
     }
-    var age = $('#age').val();
-    if (age == '') {
-      $('#error-msg').html(Yii.t('js', 'Please select age'));
-      focusOnError();
-      return false;
-    } else if (!(/^[0-9]+$/.test(age))) {
-      $('#error-msg').html(Yii.t('js', 'Please add valid age'));
-      focusOnError();
-      return false;
+    if ($('#age').length) {
+      var age = $('#age').val();
+      if (age == '') {
+        $('#error-msg').html(Yii.t('js', 'Please select age'));
+        focusOnError();
+        return false;
+      } else if (!(/^[0-9]+$/.test(age))) {
+        $('#error-msg').html(Yii.t('js', 'Please add valid age'));
+        focusOnError();
+        return false;
+      }
     }
     if ($('#gender').val() == '') {
       $('#error-msg').html(Yii.t('js', 'Please select gender'));
