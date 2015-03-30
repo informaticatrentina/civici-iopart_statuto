@@ -173,6 +173,7 @@
                           <div align="center" class="col-lg-5 col-md-5 col-sm-5 col-xs-12"> 
                             <h4 align="left">{{t('discussion', 'Your Position')}}</h4>
                             <hr>
+                            <div id="position-msg" class="">{{t('discussion', 'Make a click on the triangle to indicate your position.')}}</div>
                             <svg class="col-md-12 col-xs-12 col-sm-12 pull-left" style="padding: 0;" version="1.1" id="Layer_1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink" x="0px" y="0px" width="200px" height="180px" viewBox="-18.25 -18.75 200 180" enable-background="new -18.25 -18.75 200 180" xml:space="preserve">
                               {% for key,understand in understanding %}
                                 <a xlink:href="#" class="tmodal-launcher"><polygon class="sl" index="{{ key }}" understanding="{{ understand.a }}" comprehension="{{ understand.c }}" fill="{{ understand.fill }}" points="{{ understand.points }}" msg="{{ understand.msg }}"></polygon></a>
@@ -188,7 +189,6 @@
                             <h4>{{t('discussion', 'Your Opinion')}}</h4>
                             <hr>
                             <div id="opinion-msg" class="alert-success"></div>
-                            <p class="opinion-mode">{{t('discussion', 'First give us your position on the proposal.')}}</p>
                             <form role="form"  class="opinionform" action="" method="post"  >                          
                               <fieldset class="opinion-textbox">
                                 <div class="form-group">
