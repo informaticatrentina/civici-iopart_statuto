@@ -23,6 +23,16 @@
     {% endif %}
     <input type="text" class="input-block-level" name ="lastname" value="{{lastName}}" id="lastname" placeholder="{{t('discussion', 'Last Name')}}">
     
+    {% set nickname = '' %}
+    {% if user.nickname is not empty %}
+      {% set nickname = user.nickname %}
+    {% endif %}
+    <input type="text" class="input-block-level" name ="nickname" value="{{nickname}}" id="nickname" placeholder="{{t('discussion', 'Nickname')}}">
+
+    <button class="btn btn-primary small" type="button" id="check_availability">{{t('discussion', 'Check Availability')}}</button>
+    &nbsp;
+    <span id="load-image"><img src="{{constant('BASE_URL')}}images/loader.gif" alt="loading..." /></span>
+    <br/><br/>
     {% set email = '' %}
     {% if user.email is not empty %}
       {% set email = user.email %}

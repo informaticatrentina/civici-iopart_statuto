@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  $('#load-image').hide();
   $('#register-submit').click(function(){
     if($('#firstname').val() == '') {
          $('#error').html(Yii.t('js',"Please enter First Name")).css('color','red');
@@ -7,7 +8,11 @@ $(document).ready(function() {
      if($('#lastname').val() == '') {
          $('#error').html(Yii.t('js',"Please enter Last Name")).css('color','red');
         return false;
-    } 
+    }
+    if($('#nickname').val() == '') {
+         $('#error').html(Yii.t('js',"Please enter Nickname")).css('color','red');
+        return false;
+    }
     var emailRegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     var email = $('#email').val();
     if (email == '') {
@@ -48,6 +53,34 @@ $(document).ready(function() {
       return false;
     }
     $('#error').html();
-  }); 
+  });
+
+  $('#check_availability').on('click', function() {
+    var nickname = $('#nickname').val();
+    if (nickname.length > 0) {
+      $('#load-image').show();
+      $.ajax({
+        type: 'GET',
+        url: 'user/checknickname',
+        dataType: 'json',
+        data: {
+          nickname : nickname
+        },
+        success: function(resp) {
+          if (resp.success) {
+            $('#error').html(resp.msg).css('color','red');
+          } else {
+            $('#error').html(resp.msg).css('color','green');
+          }
+          $('#load-image').hide();
+        },
+        error: function() {
+          $('#load-image').hide();
+          alert(Yii.t('js', 'Some error occured, please try again'));
+        }
+      });
+    }
+    $('#error').html('');
+  });
 });
 
