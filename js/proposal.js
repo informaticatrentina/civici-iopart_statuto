@@ -4,6 +4,7 @@ var agree = new Array(5, 6, 2);
 var disagree = new Array(8, 9, 4);
 var triangle = '';
 var targetLang = '';
+var authorSlug = '';
 document.title = $('.pull-left > h1').text() + '| ' + title;
 $(document).ready(function() {
   $('.openModal').click(function() { 
@@ -44,7 +45,7 @@ $(document).ready(function() {
     $('.submit-link-msg').text('');
     var img = $(this).children('.byline').children('img').attr('src');
     var authorName = $(this).siblings('.authName').val();
-    var authorSlug = $(this).siblings('.author-slug').val();
+    authorSlug = $(this).siblings('.author-slug').val();
     var headerHtml =  '<div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">\n\
                          <img src="'+ img +'" class="img-responsive img-circle"> \n\
                        </div>\n\
@@ -800,7 +801,7 @@ function setOpinionComment() {
     isAddedAuthorOpinion = true;
   } else {
     $('#opinion').children('.opinionbox').children('.row').each(function() {
-      if ($.trim($(this).find("strong > a").html()) == author) {
+      if ($.trim($(this).find("strong > a").html()) == $.trim(author)) {
         var answerHtml = '';
         if (typeof($(this).find('.small').html()) != 'undefined') {
           $(this).find('.small').each(function() {
