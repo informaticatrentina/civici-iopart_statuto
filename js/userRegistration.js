@@ -5,13 +5,15 @@ $(document).ready(function() {
          $('#error').html(Yii.t('js',"Please enter First Name")).css('color','red');
         return false;
     }
-     if($('#lastname').val() == '') {
+    if ($('#is-user').is(':checked')) {
+      if($('#lastname').val() == '') {
          $('#error').html(Yii.t('js',"Please enter Last Name")).css('color','red');
         return false;
-    }
-    if($('#nickname').val() == '') {
-         $('#error').html(Yii.t('js',"Please enter Nickname")).css('color','red');
-        return false;
+      }
+      if($('#nickname').val() == '') {
+           $('#error').html(Yii.t('js',"Please enter Nickname")).css('color','red');
+          return false;
+      }
     }
     var emailRegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
     var email = $('#email').val();
@@ -81,6 +83,18 @@ $(document).ready(function() {
       });
     }
     $('#error').html('');
+  });
+
+  $('#is-user, #is-org').on('change', function() {
+    if ($('#is-user').is(':checked')) {
+      $('#firstname, #lastname, #nickname, #check_availability, #email, #cemail, #password,\n\
+      #confirm-password, #register-terms-label, #register-privacy-label, .br-for-user,\n\
+      #register-submit').show();
+      $('#firstname').attr('placeholder', Yii.t('js', 'First Name'));
+    } else if ($('#is-org').is(':checked')) {
+      $('#lastname, #nickname, #check_availability, .br-for-user').hide();
+      $('#firstname').attr('placeholder', Yii.t('js', 'Organization Name'));
+    }
   });
 });
 
