@@ -86,15 +86,19 @@ $(document).ready(function() {
   });
 
   $('#is-user, #is-org').on('change', function() {
-    if ($('#is-user').is(':checked')) {
-      $('#firstname, #lastname, #nickname, #check_availability, #email, #cemail, #password,\n\
-      #confirm-password, #register-terms-label, #register-privacy-label, .br-for-user,\n\
-      #register-submit').show();
-      $('#firstname').attr('placeholder', Yii.t('js', 'First Name'));
-    } else if ($('#is-org').is(':checked')) {
-      $('#lastname, #nickname, #check_availability, .br-for-user').hide();
-      $('#firstname').attr('placeholder', Yii.t('js', 'Organization Name'));
-    }
+    checkRegistrationType();
   });
+  checkRegistrationType();
 });
 
+function checkRegistrationType() {
+  if ($('#is-user').is(':checked')) {
+    $('#firstname, #lastname, #nickname, #check_availability, #email, #cemail, #password,\n\
+    #confirm-password, #register-terms-label, #register-privacy-label, .br-for-user,\n\
+    #register-submit').show();
+    $('#firstname').attr('placeholder', Yii.t('js', 'First Name'));
+  } else if ($('#is-org').is(':checked')) {
+    $('#lastname, #nickname, #check_availability, .br-for-user').hide();
+    $('#firstname').attr('placeholder', Yii.t('js', 'Organization Name'));
+  }
+}

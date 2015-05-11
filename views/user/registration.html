@@ -11,13 +11,20 @@
       </div>
     {% endif %}
     <div  class="alert-error" id="error"></div>
-
+    {% set checkedOrg = "" %}
+    {% set checkedUser = "checked='checked'" %}
+    {% if attribute(user, 'registration-type') is not empty %}
+      {% if attribute(user, 'registration-type') == "org" %}
+        {% set checkedOrg = "checked='checked'" %}
+        {% set checkedUser = "" %}
+      {% endif %}
+    {% endif %}
     <label id="is-user-label">
-      <input type="radio" class="checkbox" name="registration-type" checked="checked" id="is-user" value="user" >
+      <input type="radio" class="checkbox" name="registration-type" id="is-user" value="user" {{checkedUser}}>
       <i>{{t('discussion', 'User')}}</i>
     </label>
     <label id="is-user-label">
-      <input type="radio" class="checkbox" name="registration-type" id="is-org" value="org" >
+      <input type="radio" class="checkbox" name="registration-type" id="is-org" value="org" {{checkedOrg}}>
       <i>{{t('discussion', 'Organization')}}</i>
     </label>
 
