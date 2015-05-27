@@ -521,6 +521,10 @@ $(document).ready(function() {
       $('#proposal-error').html(Yii.t('js', ' Proposal can not be empty'));
       return false;
     }
+    //checking session active/inactve of user.
+    var msg = Yii.t('js', 'Your session has expired.');
+    msg += " " + Yii.t('js', 'Press Cancel to stay on page. Press Ok to redirect to home page.');
+    checkSession(msg);
     $(this).parents('.modal').modal('hide');
     $('#confirm-alert').modal('show');
     $('#yes').click(function() {
