@@ -521,13 +521,6 @@ $(document).ready(function() {
       $('#proposal-error').html(Yii.t('js', ' Proposal can not be empty'));
       return false;
     }
-    if ($('.topic').length != 0) {
-      if ($('.topic:checked').length == 0) {
-        $('#proposal-error').show();
-        $('#proposal-error').html(Yii.t('js', ' Please select atleast one topic.'));
-        return false;
-      }
-    }
     $(this).parents('.modal').modal('hide');
     $('#confirm-alert').modal('show');
     $('#yes').click(function() {
