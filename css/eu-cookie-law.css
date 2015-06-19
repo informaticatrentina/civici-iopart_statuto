@@ -7,8 +7,8 @@
   position: fixed;
   top: 0;
   z-index: 2000;
+  width: 100%;
 }
-
 
 .cookiebanner a.close-cookie-banner {
     background: red none repeat scroll 0 0;
