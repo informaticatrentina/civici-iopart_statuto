@@ -580,6 +580,7 @@ $(document).ready(function() {
       }
     }
     var pathname = window.location.pathname;
+    $('#modalBox').modal('hide');
     $.pageslide({direction: 'left', href: page.base_url + 'login?back=' + pathname + proposalClass});
     return false;
   });  
