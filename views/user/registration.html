@@ -11,18 +11,45 @@
       </div>
     {% endif %}
     <div  class="alert-error" id="error"></div>
+    {% set checkedOrg = "" %}
+    {% set checkedUser = "checked='checked'" %}
+    {% if attribute(user, 'registration-type') is not empty %}
+      {% if attribute(user, 'registration-type') == "org" %}
+        {% set checkedOrg = "checked='checked'" %}
+        {% set checkedUser = "" %}
+      {% endif %}
+    {% endif %}
+    <label id="is-user-label">
+      <input type="radio" class="checkbox" name="registration-type" id="is-user" value="user" {{checkedUser}}>
+      <i>{{t('discussion', 'User')}}</i>
+    </label>
+    <label id="is-user-label">
+      <input type="radio" class="checkbox" name="registration-type" id="is-org" value="org" {{checkedOrg}}>
+      <i>{{t('discussion', 'Organization')}}</i>
+    </label>
+
     {% set firstName = '' %}
     {% if user.firstname is not empty %}
       {% set firstName = user.firstname %}
     {% endif %}
     <input type="text" class="input-block-level" name ="firstname" value ="{{firstName}}" id="firstname" placeholder="{{t('discussion', 'First Name')}}">
-    
+
     {% set lastName = '' %}
     {% if user.lastname is not empty %}
       {% set lastName = user.lastname %}
     {% endif %}
     <input type="text" class="input-block-level" name ="lastname" value="{{lastName}}" id="lastname" placeholder="{{t('discussion', 'Last Name')}}">
     
+    {% set nickname = '' %}
+    {% if user.nickname is not empty %}
+      {% set nickname = user.nickname %}
+    {% endif %}
+    <input type="text" class="input-block-level" name ="nickname" value="{{nickname}}" id="nickname" placeholder="{{t('discussion', 'Nickname')}}">
+
+    <button class="btn btn-primary small" type="button" id="check_availability">{{t('discussion', 'Check Availability')}}</button>
+    &nbsp;
+    <span id="load-image"><img src="{{constant('BASE_URL')}}images/loader.gif" alt="loading..." /></span>
+    <br class="br-for-user"/><br class="br-for-user" />
     {% set email = '' %}
     {% if user.email is not empty %}
       {% set email = user.email %}
@@ -52,7 +79,7 @@
       {% set checked = 'checked' %}
     {% endif %}
     {% set ahref_link = {'{ahref_start_tag}': '<a href="http://partecipa.tn.it/tos" target="_blank">', '{ahref_end_tag}' : '</a>'} %}
-    <label class="checkbox">
+    <label class="checkbox" id="register-terms-label">
       <input type="checkbox"  required name="terms_and_condition" id="register-terms" {{checked}} value="terms_and_condition">
       <i>{{t('discussion', 'I agree to the principles and {ahref_start_tag} the terms of service {ahref_end_tag}', ahref_link)}}</i>
     </label>
@@ -62,7 +89,7 @@
       {% set checked = 'checked' %}
     {% endif %}
     {% set ahref_link = {'{ahref_start_tag}': '<a href="http://www.provincia.tn.it/privacy" target="_blank">', '{ahref_end_tag}' : '</a>'} %}
-    <label class="checkbox">
+    <label class="checkbox" id="register-privacy-label">
       <input type="checkbox" required name="privacy_policy" id="register-privacy" {{checked}} value="privacy_policy">
       <i>{{t('discussion', 'I have read the {ahref_start_tag} privacy {ahref_end_tag} and I authorize the processing of personal data under Article. 13 of Legislative Decree no. 196/2003', ahref_link)}}</i>
     </label>

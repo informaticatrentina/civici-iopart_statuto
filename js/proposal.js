@@ -4,6 +4,7 @@ var agree = new Array(5, 6, 2);
 var disagree = new Array(8, 9, 4);
 var triangle = '';
 var targetLang = '';
+var authorSlug = '';
 document.title = $('.pull-left > h1').text() + '| ' + title;
 $(document).ready(function() {
   $('.openModal').click(function() { 
@@ -44,7 +45,7 @@ $(document).ready(function() {
     $('.submit-link-msg').text('');
     var img = $(this).children('.byline').children('img').attr('src');
     var authorName = $(this).siblings('.authName').val();
-    var authorSlug = $(this).siblings('.author-slug').val();
+    authorSlug = $(this).siblings('.author-slug').val();
     var headerHtml =  '<div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">\n\
                          <img src="'+ img +'" class="img-responsive img-circle"> \n\
                        </div>\n\
@@ -520,13 +521,10 @@ $(document).ready(function() {
       $('#proposal-error').html(Yii.t('js', ' Proposal can not be empty'));
       return false;
     }
-    if ($('.topic').length != 0) {
-      if ($('.topic:checked').length == 0) {
-        $('#proposal-error').show();
-        $('#proposal-error').html(Yii.t('js', ' Please select atleast one topic.'));
-        return false;
-      }
-    }
+    //checking session active/inactve of user.
+    var msg = Yii.t('js', 'Your session has expired.');
+    msg += " " + Yii.t('js', 'Press Cancel to stay on page. Press Ok to redirect to home page.');
+    checkSession(msg);
     $(this).parents('.modal').modal('hide');
     $('#confirm-alert').modal('show');
     $('#yes').click(function() {
@@ -801,7 +799,7 @@ function setOpinionComment() {
     isAddedAuthorOpinion = true;
   } else {
     $('#opinion').children('.opinionbox').children('.row').each(function() {
-      if ($.trim($(this).find("strong > a").html()) == author) {
+      if ($.trim($(this).find("strong > a").html()) == $.trim(author)) {
         var answerHtml = '';
         if (typeof($(this).find('.small').html()) != 'undefined') {
           $(this).find('.small').each(function() {

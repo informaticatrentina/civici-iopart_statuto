@@ -79,7 +79,7 @@
   {% if topics is not empty %}
     <div class="discussion-topic">
       {% for topic in topics %}
-        <span class="discussion-tag-display"><a href="{{constant('BASE_URL')}}discussion/proposals/{{slug}}/{{topic}}">{{topic}}</a></span>
+        <span class="discussion-tag-display"><a href="{{constant('BASE_URL')}}discussion/proposals/{{slug}}/{{sanitization(topic)}}">{{topic}}</a></span>
       {% endfor %}
     </div>
   {% endif %}
