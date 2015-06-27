@@ -117,6 +117,9 @@
           <input class="authName" value="{{ proposal.author.name }}" type="hidden"/>
           <input class="author-slug" value="{{proposal.author.slug}}" type="hidden"/>
           <input value="{{constant('PROFILE_URL')}}" class="profileUrl" type="hidden"/>
+          {% if attached_image_on_proposal == 1 %}
+            <input class="image" value="{{proposal.image}}" type="hidden"/>
+          {% endif %}
           <input value="{{proposal.target_language}}" class="targetLanguage" type="hidden"/>
           <footer>
             {% set adminUser = false %}
@@ -327,7 +330,7 @@
         <div class="modal-footer"></div>
         {% else %}
           <div class="modal-body" style="padding:40px;">
-            <form class="form-horizontal" method="post" role="form" action="{{constant('BASE_URL')}}discussion/proposal/submit/{{ slug }}" id="submit-proposal-form">
+            <form class="form-horizontal" method="post" role="form" action="{{constant('BASE_URL')}}discussion/proposal/submit/{{ slug }}" id="submit-proposal-form" enctype="multipart/form-data">
               {% set class = 'alert-danger' %}
               {% if message.msg is not empty %}
                 {% if message.success is not empty %}
@@ -367,6 +370,12 @@
                 <label for="Proposal">{{ t('discussion', 'Proposal') }}</label>
                 <textarea rows="5" class="form-control" id="proposalBody" name="body">{{summary}}</textarea>
               </div>
+              {% if attached_image_on_proposal == 1 %}
+                <div class="form-group">
+                  <label for="urlForImage">{{ t('discussion', 'Proposal Image') }}</label>
+                  <input type="file" id="url-for-image" name="proposal_image" />
+                </div>
+              {% endif %}
               <div class="form-group">
                 {% if topics is not empty %}
                   <label for="Topics">{{ t('discussion', 'Topics') }}</label>
@@ -449,6 +458,7 @@
   var loginUserslug = "{{loginUserslug}}";
   var imagePath = "{{constant('IMAGE_URL')}}";
   var baseUrl = "{{constant('BASE_URL')}}";
+  var attacheImageOnProposal = "{{attached_image_on_proposal}}";
 </script>
 {% if proposal_layout is not empty %}
   {% if proposal_layout == 3 %}

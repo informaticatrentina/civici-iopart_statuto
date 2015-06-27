@@ -62,6 +62,8 @@ $(document).ready(function() {
     var summary = $(this).children('summary').html();    
     $('#proposal').html('');
     var propDiv = '<article><div class="clearfix"></div><p><summary>' + summary + '</summary></p><div class="clearfix"></div><p><description>' + description + '</description></p></article>';
+    var area = $(this);
+    propDiv += prepareProposalVideoImageHtml(area);
     $('#proposal').append(propDiv);
     $.ajax({
       type: 'POST',
@@ -526,7 +528,6 @@ $(document).ready(function() {
     msg += " " + Yii.t('js', 'Press Cancel to stay on page. Press Ok to redirect to home page.');
     checkSession(msg);
     $(this).parents('.modal').modal('hide');
-    $('#confirm-alert').modal('show');
     $('#yes').click(function() {
       $('#yes').attr("disabled", true);
       $('#submit-proposal-form').submit();
@@ -994,4 +995,16 @@ function actionOnPasteEvent(self) {
       $('#saveProposal').removeAttr('disabled');
     }
   }, 100);
+}
+
+function prepareProposalVideoImageHtml(area) {
+  var proposalHtml = '';
+  if (attacheImageOnProposal == 1) {
+    var proposalImage = $(area).siblings('.image').val();console.log(proposalImage);
+    if (proposalImage != '' && proposalImage != 'undefined') {
+      proposalHtml += '<hr><div class="proposal-image"><h4>' + Yii.t('js', 'Proposal Image') + '</h4>';
+      proposalHtml += '<img src="' + proposalImage + '" height="250 " alt="proposal image"/></div>';
+    }
+  }
+  return proposalHtml;
 }
