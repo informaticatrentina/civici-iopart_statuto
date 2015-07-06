@@ -1003,7 +1003,7 @@ function prepareProposalVideoImageHtml(area) {
     var proposalImage = $(area).siblings('.image').val();console.log(proposalImage);
     if (proposalImage != '' && proposalImage != 'undefined') {
       proposalHtml += '<hr><div class="proposal-image"><h4>' + Yii.t('js', 'Proposal Image') + '</h4>';
-      proposalHtml += '<img src="' + proposalImage + '" height="250 " alt="proposal image"/></div>';
+      proposalHtml += '<img src="' + proposalImage + '" height="250" class="img-responsive" alt="proposal image"/></div>';
     }
   }
   return proposalHtml;
